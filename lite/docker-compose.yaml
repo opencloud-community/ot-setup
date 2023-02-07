@@ -1,0 +1,244 @@
+---
+version: "3.9"
+services:
+  # *** KEYCLOAK ***
+  keycloak:
+    image: quay.io/keycloak/keycloak:${KC_IMAGE_TAG:-20.0}
+    profiles: ["core", "keycloak", "controller"]
+    restart: always
+    environment:
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN:-admin}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+      KC_REALM_ID: ${KC_REALM_ID:-opentalk}
+      KC_REALM_NAME: ${KC_REALM_NAME:-opentalk}
+      KC_REALM_DISPLAYNAME: ${KC_REALM_DISPLAYNAME:-opentalk}
+      KC_CLIENT_SECRET: ${KC_CLIENT_SECRET}
+      KC_DOMAIN: ${OT_DOMAIN:-opentalk.example.com}
+      KC_HOSTNAME: "accounts.${OT_DOMAIN:-opentalk.example.com}"
+      KC_HTTP_RELATIVE_PATH: ${KC_HTTP_RELATIVE_PATH:-/auth}
+      KC_PROXY: ${KC_PROXY:-edge}
+      KC_TESTUSER_ENABLE: ${KC_TESTUSER_ENABLE:-false}
+    entrypoint: []
+    command:
+      - /bin/sh
+      - -c
+      - |
+          /opt/keycloak/bin/kc.sh build --health-enabled=true
+          /opt/keycloak/bin/kc.sh start --import-realm --optimized
+    user: 0:0
+    volumes:
+      - ${KC_HOST_DATA_DIR:-./data/kc_data}:/opt/keycloak/data/:Z
+      - ${KC_HOST_POVIDER_DIR:-./data/kc_provider}:/opt/keycloak/providers:Z
+    ports:
+      - ${KC_EXP_PORT:-8087}:8080
+    healthcheck:
+      test: curl -fsS http://keycloak:8080/auth/health/ready -o - | grep UP
+      interval: 20s
+      timeout: 120s
+      retries: 10
+ 
+  # *** POSTGRES ***
+  postgres:
+    image: postgres:${POSTGRES_IMAGE_TAG:-13-alpine}
+    profiles: ["core", "postgres", "controller"]
+    volumes:
+      - ${POSTGRES_HOST_DATA_DIR:-./data/pg_data}:/var/lib/postgresql/data
+    restart: always
+    # ports:
+    #  - ${POSTGRES_EXP_PORT:-5432}:5432
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-k3k}
+      POSTGRES_USER: ${POSTGRES_USER:-ot}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+ 
+  # *** AUTOHEAL ***
+  autoheal:
+    image: willfarrell/autoheal:${AUTOHEAL_IMAGE_TAG:-latest}
+    profiles: ["core", "keycloak", "postgres", "rabbit", "web-frontend", "controller", "janus"]
+    restart: always
+    environment:
+      AUTOHEAL_CONTAINER_LABEL: all
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+ 
+  rabbit:
+    image: rabbitmq:${RABBITMQ_IMAGE_TAG:-3.10-management-alpine}
+    profiles: ["core", "rabbit", "janus", "controller", "obelisk", "mail-worker", "recorder"]
+    restart: always
+    ports:
+      - ${RABBITMQ_EXP_NODE_PORT:-5672}:5672
+    # - ${RABBITMQ_EXP_UI_PORT:-15672}:15672
+    environment:
+      RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS: -rabbit consumer_timeout 30000
+    healthcheck:
+      test: rabbitmq-diagnostics -q check_running && rabbitmq-diagnostics -q check_local_alarms
+      interval: 10s
+      timeout: 15s
+      retries: 5
+ 
+  # *** Redis ***
+  redis:
+    image: redis:${REDIS_IMAGE_TAG:-alpine}
+    profiles: ["core", "redis", "controller"]
+    restart: always
+    # ports:
+    #  - ${REDIS_EXP_PORT:-6379}:${REDIS_EXP_PORT:-6379}
+ 
+  # *** Web-Frontend
+  web-frontend:
+    image: registry.opencode.de/opentalk/web-frontend:${OT_FRONTEND_IMAGE_TAG:-v1}
+    profiles: ["core", "web-frontend"]
+    restart: always
+    ports:
+      - ${OT_FRONTEND_EXP_PORT:-8080}:80
+    environment:
+      CONTROLLER_HOST: controller.${OT_DOMAIN:-opentalk.example.com}
+      BASE_URL: https://${OT_DOMAIN:-opentalk.example.com}
+      OIDC_ISSUER: https://accounts.${OT_DOMAIN:-opentalk.example.com}/auth/realms/${KC_REALM_ID:-opentalk}
+      OIDC_CLIENT_ID: ${OIDC_CLIENT_ID:-OtFrontend}
+      NDT_SERVER: ${NDT_SERVER:-ndt.example.com}
+      CHANGE_PASSWORD_URL: https://accounts.${OT_DOMAIN:-opentalk.example.com}/auth/realms/${KC_REALM_ID:-opentalk}/account/
+      ERROR_REPORT_ADDRESS: ${ERROR_REPORT_ADDRESS:-reports@example.com}
+      LIBRAVATAR_DEFAULT_IMAGE: ${LIBRAVATAR_DEFAULT_IMAGE:-identicon}
+      VIDEO_BACKGROUNDS: >-
+        [{
+          altText: 'OpenTalk',
+          url: '/assets/videoBackgrounds/elevate-bg.png',
+          thumb: '/assets/videoBackgrounds/thumbs/elevate-bg-thumb.png',
+        }]
+      IS_BETA_RELEASE: ${IS_BETA_RELEASE:-false}
+      FEATURE_USER_SEARCH: ${FEATURE_USER_SEARCH:-false}
+      FEATURE_TIMER: ${FEATURE_TIMER:-true}
+      FEATURE_WHITEBOARD: ${FEATURE_WHITEBOARD:-false}
+      FEATURE_PROTOCOL: ${FEATURE_PROTOCOL:-false}
+      FEATURE_RECORDING: ${FEATURE_RECORDING:-false}
+
+  # *** controller ***
+  controller:
+    image: registry.opencode.de/opentalk/controller:${OT_CONTROLLER_IMAGE_TAG:-v0.1}
+    profiles: ["core", "controller"]
+    restart: always
+    depends_on:
+      keycloak:
+        condition: service_healthy
+      rabbit:
+        condition: service_healthy
+      janus:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+    ports:
+      - ${OT_CONTROLLER_EXP_PORT:-8090}:11311
+    volumes:
+      - ${OT_CONTROLLER_CONFIG_FILE:-./config/controller.toml}:/controller/config.toml
+
+  # *** minio ***
+  minio:
+    image: minio/minio:RELEASE.2023-01-02T09-40-09Z.hotfix.5c99bdd49
+    profiles: ["core", "minio", "controller"]
+    restart: always
+    command: minio server /data
+    volumes:
+      - ./data/minio:/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+
+  # *** janus gateway***
+  janus:
+    image: registry.opencode.de/opentalk/janus-gateway:${JANUS_IMAGE_TAG:-latest}
+    profiles: ["core", "janus", "controller", "obelisk"]
+    restart: always
+    network_mode: host
+    depends_on:
+      - rabbit
+    command:
+      - janus
+    environment:
+      - WAITTIMEOUT=${WAITTIMEOUT:-30}
+      - RABBITMQ_HOST=${RABBITMQ_HOST:-rabbit}
+      - RABBITMQ_PORT=${RABBITMQ_PORT:-5672}
+      - JANUS_DISABLE_WEBSOCKET=${JANUS_DISABLE_WEBSOCKET:-true}
+      - JANUS_DISABLE_HTTP=${JANUS_DISABLE_HTTP:-true}
+      - JANUS_EXCHANGE=${JANUS_EXCHANGE:-janus-exchange}
+      - JANUS_QUEUE_NAME=${JANUS_QUEUE_NAME:-janus-gateway}
+      - JANUS_EXCHANGE_TYPE=${JANUS_EXCHANGE_TYPE:-topic}
+      - JANUS_QUEUE_INCOMING=${JANUS_QUEUE_INCOMING:-to-janus}
+      - JANUS_ROUTING_KEY_OUTGOING=${JANUS_ROUTING_KEY_OUTGOING:-from-janus}
+      - JANUS_ICE_IF=${JANUS_ICE_IF:-eth0}
+      - JANUS_UDP_PORT_RANGE=${JANUS_UDP_PORT_RANGE:-20000-25000}
+      - JANUS_ICE_LITE=${JANUS_ICE_LITE:-true}
+      - JANUS_EVENT_LOOPS=${JANUS_EVENT_LOOPS:-8}
+      - JANUS_IGNORE_MDNS=${JANUS_IGNORE_MDNS:-true}
+
+  # *** obelisk ***
+  obelisk:
+    image: registry.opencode.de/opentalk/obelisk:${OT_OBELISK_IMAGE_TAG:-latest}
+    profiles: ["obelisk"]
+    network_mode: host
+    restart: always
+    depends_on:
+      rabbit:
+        condition: service_healthy
+      janus:
+        condition: service_healthy
+    environment:
+      RUST_LOG: ${RUST_LOG:-info}
+      GST_DEBUG: ${GST_DEBUG:-2}
+      CONTROLLER_DOMAIN: ${CONTROLLER_DOMAIN:-controller.$OT_DOMAIN}
+      SIP_ADDR: "${SIP_ADDR:-0.0.0.0}"
+      SIP_PORT: "${SIP_PORT:-5060}"
+      SIP_USER: "${SIP_USER:-mysipuser}"
+      SIP_PASSWORD: "${SIP_PASSWORD:-mysippw}"
+      SIP_REALM: "${SIP_REALM:-SIP_REALM}"
+      SIP_REGISTRAR: "${SIP_REGISTRAR:-sip:yoursipprovider.com}"
+      SIP_STUN_SERVER: "${SIP_STUN_SERVER:-stun.yoursipprovider.com:3478}"
+      SIP_ENFORCE_QOP: "${SIP_ENFORCE_QOP:-true}"
+      SIP_RTP_PORT_RANGE_START: "${SIP_RTP_PORT_RANGE_START:-40000}"
+      SIP_RTP_PORT_RANGE_END: "${SIP_RTP_PORT_RANGE_END:-49999}"
+
+  # *** mail worker ***
+  mail-worker:
+    image: registry.opencode.de/opentalk/smtp-mailer:${OT_MAIL_WORKER_IMAGE_TAG:-latest}
+    profiles: ["mail-worker"]
+    restart: always
+    depends_on:
+      rabbit:
+        condition: service_healthy
+    #volumes:
+    #  - ${OT_MAIL_WORKER_CONFIG_FILE:-./config/mail-worker.toml}:/opt/smtp-mailer/config.toml
+    environment:
+      RUST_LOG: ${RUST_LOG:-info}
+      MAILER_SMTP__SERVER: "${SMTP_SERVER}"
+      MAILER_FRONTEND__BASE_URL: "https://$OT_DOMAIN"
+      MAILER_LANGUAGES__DEFAULT_LANGUAGE: "${LANGUAGES_DEFAULT_LANGUAGE:-de-DE}"
+      MAILER_RABBITMQ__MAIL_TASK_QUEUE: "${RABBITMQ_MAIL_TASK_QUEUE:-opentalk_mailer}"
+      MAILER_RABBITMQ__URL: "${RABBITMQ_URL:-amqp://rabbit/%2F}"
+
+  # *** spacedeck ***
+  spacedeck:
+    image: registry.opencode.de/opentalk/spacedeck:${SD_IMAGE_TAG:-latest}
+    profiles: ["spacedeck"]
+    restart: always
+    environment:
+      - SD_HOST=${SD_HOST:-0.0.0.0}
+      - SD_PORT=${SD_PORT:-9666}
+      - SD_ENDPOINT=${SD_ENDPOINT}
+      - SD_API_TOKEN=${SD_API_TOKEN}
+      - SD_INVITE_CODE=${SD_INVITE_CODE}
+    ports:
+      - "${SD_EXT_PORT:-9666}:${SD_PORT:-9666}"
+
+  # *** etherpad ***
+  etherpad:
+    image: registry.opencode.de/opentalk/etherpad:${EP_IMAGE_TAG:-latest}
+    profiles: ["etherpad"]
+    restart: always
+    environment:
+      - EP_APIKEY=${EP_APIKEY}
+      - TRUST_PROXY=${TRUST_PROXY:-true}
+    ports:
+      - "${EP_EXT_PORT:-9001}:${EP_PORT:-9001}"
+
