@@ -157,21 +157,21 @@ services:
     command:
       - janus
     environment:
-      - WAITTIMEOUT=${WAITTIMEOUT:-30}
-      - RABBITMQ_HOST=${RABBITMQ_HOST:-rabbit}
-      - RABBITMQ_PORT=${RABBITMQ_PORT:-5672}
-      - JANUS_DISABLE_WEBSOCKET=${JANUS_DISABLE_WEBSOCKET:-true}
-      - JANUS_DISABLE_HTTP=${JANUS_DISABLE_HTTP:-true}
-      - JANUS_EXCHANGE=${JANUS_EXCHANGE:-janus-exchange}
-      - JANUS_QUEUE_NAME=${JANUS_QUEUE_NAME:-janus-gateway}
-      - JANUS_EXCHANGE_TYPE=${JANUS_EXCHANGE_TYPE:-topic}
-      - JANUS_QUEUE_INCOMING=${JANUS_QUEUE_INCOMING:-to-janus}
-      - JANUS_ROUTING_KEY_OUTGOING=${JANUS_ROUTING_KEY_OUTGOING:-from-janus}
-      - JANUS_ICE_IF=${JANUS_ICE_IF:-eth0}
-      - JANUS_UDP_PORT_RANGE=${JANUS_UDP_PORT_RANGE:-20000-25000}
-      - JANUS_ICE_LITE=${JANUS_ICE_LITE:-true}
-      - JANUS_EVENT_LOOPS=${JANUS_EVENT_LOOPS:-8}
-      - JANUS_IGNORE_MDNS=${JANUS_IGNORE_MDNS:-true}
+      WAITTIMEOUT: ${JANUS_WAITTIMEOUT:-30}
+      RABBITMQ_HOST: ${RABBITMQ_HOST:-rabbit}
+      RABBITMQ_PORT: ${RABBITMQ_PORT:-5672}
+      JANUS_DISABLE_WEBSOCKET: ${JANUS_DISABLE_WEBSOCKET:-true}
+      JANUS_DISABLE_HTTP: ${JANUS_DISABLE_HTTP:-true}
+      JANUS_EXCHANGE: ${JANUS_EXCHANGE:-janus-exchange}
+      JANUS_QUEUE_NAME: ${JANUS_QUEUE_NAME:-janus-gateway}
+      JANUS_EXCHANGE_TYPE: ${JANUS_EXCHANGE_TYPE:-topic}
+      JANUS_QUEUE_INCOMING: ${JANUS_QUEUE_INCOMING:-to-janus}
+      JANUS_ROUTING_KEY_OUTGOING: ${JANUS_ROUTING_KEY_OUTGOING:-from-janus}
+      JANUS_ICE_IF: ${JANUS_ICE_IF:-eth0}
+      JANUS_UDP_PORT_RANGE: ${JANUS_UDP_PORT_RANGE:-20000-25000}
+      JANUS_ICE_LITE: ${JANUS_ICE_LITE:-true}
+      JANUS_EVENT_LOOPS: ${JANUS_EVENT_LOOPS:-8}
+      JANUS_IGNORE_MDNS: ${JANUS_IGNORE_MDNS:-true}
 
   # *** obelisk ***
   obelisk:
@@ -211,7 +211,7 @@ services:
     #  - ${OT_MAIL_WORKER_CONFIG_FILE:-./config/mail-worker.toml}:/opt/smtp-mailer/config.toml
     environment:
       RUST_LOG: ${RUST_LOG:-info}
-      MAILER_SMTP__SERVER: "${SMTP_SERVER}"
+      MAILER_SMTP__SERVER: "${SMTP_SERVER:-}"
       MAILER_FRONTEND__BASE_URL: "https://$OT_DOMAIN"
       MAILER_LANGUAGES__DEFAULT_LANGUAGE: "${LANGUAGES_DEFAULT_LANGUAGE:-de-DE}"
       MAILER_RABBITMQ__MAIL_TASK_QUEUE: "${RABBITMQ_MAIL_TASK_QUEUE:-opentalk_mailer}"
@@ -223,11 +223,11 @@ services:
     profiles: ["spacedeck"]
     restart: always
     environment:
-      - SD_HOST=${SD_HOST:-0.0.0.0}
-      - SD_PORT=${SD_PORT:-9666}
-      - SD_ENDPOINT=${SD_ENDPOINT}
-      - SD_API_TOKEN=${SD_API_TOKEN}
-      - SD_INVITE_CODE=${SD_INVITE_CODE}
+      SD_HOST: ${SD_HOST:-0.0.0.0}
+      SD_PORT: ${SD_PORT:-9666}
+      SD_ENDPOINT: ${SD_ENDPOINT:-}
+      SD_API_TOKEN: ${SD_API_TOKEN:-}
+      SD_INVITE_CODE: ${SD_INVITE_CODE:-}
     ports:
       - "${SD_EXT_PORT:-9666}:${SD_PORT:-9666}"
 
@@ -237,8 +237,8 @@ services:
     profiles: ["etherpad"]
     restart: always
     environment:
-      - EP_APIKEY=${EP_APIKEY}
-      - TRUST_PROXY=${TRUST_PROXY:-true}
+      EP_APIKEY: ${EP_APIKEY:-}
+      TRUST_PROXY: ${TRUST_PROXY:-true}
     ports:
       - "${EP_EXT_PORT:-9001}:${EP_PORT:-9001}"
 
