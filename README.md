@@ -23,12 +23,12 @@ Installed with a Linux distribution of your choice.
 
 ### Services
 
-To run OpenTalk with this deployment method, you need to have `docker engine` and the plugin `compose` installed.
+To run OpenTalk with this deployment method, you need to have the `docker engine` and the plugin `compose` to be installed.
 Please refer to the official documentation for **[docker engine](https://docs.docker.com/engine/install)** and the **[docker compose plugin](https://docs.docker.com/compose/install/linux)**.
 
 ### open Firewall ports
 
-Ensure, that the ports `80/tcp`, `443/tcp` and `20000-25000/udp` are opened in your firewall and accessible from the public.
+Ensure, that the ports `80/tcp`, `443/tcp` and `20000-25000/udp` are opened in your firewall and accessible from public.
 
 ### DNS records
 
@@ -41,7 +41,7 @@ If your domain is for example `example.com`, you have to create the following DN
 
 ### Reverse-Proxy and SSL certificates
 
-Get valid SSL certificates for your DNS records at the certificate authority of your choice. We recommend using [letsencrypt](https://letsencrypt.org/) in combination with [certbot](https://certbot.eff.org/) for this.
+Get valid SSL certificates for your DNS records at the certificate authority of your choice. We recommend using [letsencrypt](https://letsencrypt.org/) in combination with [certbot](https://certbot.eff.org/) for this purpose.
 
 Set up a reverse proxy that terminates the SSL connections and forward the requests to the appropriate OpenTalk upstream services.
 When you use the default ports, the services listen on the following ports on the local interface:
@@ -52,14 +52,13 @@ When you use the default ports, the services listen on the following ports on th
 
 We recommend using nginx as reverse-proxy. Please refer the [official nginx documentation](https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/) for further information.
 
-As inspiration, we provide configuration examples in the directory `./lite/extras/nginx-samples`. Customize it to your needs.
+As an inspiration, we provide configuration examples in the directory `./lite/extras/nginx-samples`. Customize it to your needs.
 
 ## Setup OpenTalk services
 
 ### Clone the `ot-setup` repository
 
-Clone the git repository to a location of your choice. Since we are using directory based docker volumes in this deployment guide, make sure there is enough storage on that location.
-We recommend using `/opt/opentalk` for this.
+Clone the git repository to a location of your choice. Since we are using directory based docker volumes in this deployment guide, make sure there is enough storage on that location. We recommend using `/opt/opentalk` for this.
 
 ```bash
 git clone https://gitlab.opencode.de/opentalk/ot-setup.git /opt/opentalk
@@ -89,11 +88,12 @@ cp config/controller.toml.sample config/controller.toml
 
 #### Edit the `.env` file settings
 
-Customize the variables in `.env` according to your needs. In most cases, it is sufficient to adjust the values listed under `common variables`. You should always leave the `docker-compose.yaml` file unchanged to have an easier update process in the future.
+Customize the variables in `.env` according to your needs. In most cases, it is sufficient to adjust the values listed under `common variables`. You should always leave the `docker-compose.yaml` file unchanged to have an easier update process in future.
 
 ##### OPTIONAL: generate secrets with the `gen-common-params.sh` helper script
 
 To simply copy+paste the secrets into the .env file, you might find this helpful.
+
 **NOTE**: The script needs to have the package `pwgen` installed!
 
 ```bash
@@ -114,7 +114,7 @@ KEYCLOAK_ADMIN_PASSWORD=Ce4Xae8shaih9oghee1iehei
 KC_CLIENT_SECRET=ooleic2aewai5chiC9jae6iu 
 
 # If janus is running in docker host mode it needs a local host interface for rabbitmq to connect.
-# Use only a SINGE line and uncomment it:
+# Use only a SINGLE line and uncomment it:
 # !!! DO NOT CHOOSE YOUR PUBLIC IP ADDRESS!!!
 # RABBITMQ_HOST=20.30.40.50
 # RABBITMQ_HOST=10.0.1.2
@@ -148,7 +148,7 @@ docker compose up -d
 
 ## Post installation tasks
 
-After your configuration has finished and the services are up and running, you probably want to create users to login into your new OpenTalk installation. We use Keycloak for the user management. You can find documentation about user management in Keycloak in the official [Keycloak administration](https://www.keycloak.org/docs/latest/server_admin/#assembly-managing-users_server_administration_guide) guide.
+After your configuration has been finished and the services are up and running, you probably want to create users to login into your new OpenTalk installation. We use Keycloak for the user management. You can find documentation about user management in Keycloak in the official [Keycloak administration](https://www.keycloak.org/docs/latest/server_admin/#assembly-managing-users_server_administration_guide) guide.
 
 ### Log in to Keycloak web interface and create users for OpenTalk
 
