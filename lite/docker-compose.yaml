@@ -60,7 +60,8 @@ services:
       AUTOHEAL_CONTAINER_LABEL: all
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
- 
+
+  # *** RabbitMQ ***
   rabbit:
     image: rabbitmq:${RABBITMQ_IMAGE_TAG:-3.10-management-alpine}
     profiles: ["core", "rabbit", "janus", "controller", "obelisk", "mail-worker", "recorder"]
@@ -162,7 +163,7 @@ services:
     environment:
       WAITTIMEOUT: ${JANUS_WAITTIMEOUT:-30}
       RABBITMQ_HOST: ${RABBITMQ_HOST:-rabbit}
-      RABBITMQ_PORT: ${RABBITMQ_PORT:-5672}
+      RABBITMQ_PORT: ${RABBITMQ_EXP_NODE_PORT:-5672}
       JANUS_DISABLE_WEBSOCKET: ${JANUS_DISABLE_WEBSOCKET:-true}
       JANUS_DISABLE_HTTP: ${JANUS_DISABLE_HTTP:-true}
       JANUS_EXCHANGE: ${JANUS_EXCHANGE:-janus-exchange}
@@ -232,7 +233,7 @@ services:
       SD_API_TOKEN: ${SD_API_TOKEN:-}
       SD_INVITE_CODE: ${SD_INVITE_CODE:-}
     ports:
-      - "${SD_EXT_PORT:-9666}:${SD_PORT:-9666}"
+      - "${SD_EXP_PORT:-9666}:${SD_PORT:-9666}"
 
   # *** etherpad ***
   etherpad:
@@ -243,5 +244,5 @@ services:
       EP_APIKEY: ${EP_APIKEY:-}
       TRUST_PROXY: ${TRUST_PROXY:-true}
     ports:
-      - "${EP_EXT_PORT:-9001}:${EP_PORT:-9001}"
+      - "${EP_EXP_PORT:-9001}:${EP_PORT:-9001}"
 
