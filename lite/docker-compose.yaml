@@ -87,7 +87,7 @@ services:
  
   # *** Web-Frontend
   web-frontend:
-    image: ${OT_WEBFRONTEND_IMAGE_SRC:-registry.opencode.de/opentalk/web-frontend}:${OT_FRONTEND_IMAGE_TAG:-v1}
+    image: ${OT_WEBFRONTEND_IMAGE_SRC:-registry.opencode.de/opentalk/web-frontend}:${OT_FRONTEND_IMAGE_TAG:-v1.1.0}
     profiles: ["core", "web-frontend"]
     restart: always
     ports:
@@ -116,7 +116,7 @@ services:
 
   # *** controller ***
   controller:
-    image: ${OT_IMAGE_REGISTRY:-registry.opencode.de}/opentalk/controller:${OT_CONTROLLER_IMAGE_TAG:-v0.1}
+    image: ${OT_IMAGE_REGISTRY:-registry.opencode.de}/opentalk/controller:${OT_CONTROLLER_IMAGE_TAG:-v0.1.0}
     profiles: ["core", "controller"]
     restart: always
     depends_on:
@@ -179,7 +179,7 @@ services:
 
   # *** obelisk ***
   obelisk:
-    image: ${OT_IMAGE_REGISTRY:-registry.opencode.de}/opentalk/obelisk:${OT_OBELISK_IMAGE_TAG:-latest}
+    image: ${OT_IMAGE_REGISTRY:-registry.opencode.de}/opentalk/obelisk:${OT_OBELISK_IMAGE_TAG:-v0.1.0}
     profiles: ["obelisk"]
     network_mode: host
     restart: always
@@ -205,7 +205,7 @@ services:
 
   # *** mail worker ***
   mail-worker:
-    image: ${OT_IMAGE_REGISTRY:-registry.opencode.de}/opentalk/smtp-mailer:${OT_MAIL_WORKER_IMAGE_TAG:-latest}
+    image: ${OT_IMAGE_REGISTRY:-registry.opencode.de}/opentalk/smtp-mailer:${OT_MAIL_WORKER_IMAGE_TAG:-v0.1.0}
     profiles: ["mail-worker"]
     restart: always
     depends_on:
