@@ -153,7 +153,7 @@ services:
   # *** janus gateway***
   janus:
     image: ${JANUS_IMAGE_SRC:-registry.opencode.de/opentalk/janus-gateway}:${JANUS_IMAGE_TAG:-latest}
-    profiles: ["core", "janus", "controller", "obelisk"]
+    profiles: ["core", "janus"]
     restart: always
     network_mode: host
     depends_on:
