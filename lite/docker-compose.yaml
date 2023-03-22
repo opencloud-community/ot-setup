@@ -87,7 +87,7 @@ services:
  
   # *** Web-Frontend
   web-frontend:
-    image: ${OT_IMAGE_REGISTRY:-registry.opencode.de/opentalk}/web-frontend:${OT_FRONTEND_IMAGE_TAG:-v1}
+    image: ${OT_IMAGE_REGISTRY:-registry.opencode.de}/opentalk/web-frontend:${OT_FRONTEND_IMAGE_TAG:-v1}
     profiles: ["core", "web-frontend"]
     restart: always
     ports:
@@ -116,7 +116,7 @@ services:
 
   # *** controller ***
   controller:
-    image: ${OT_IMAGE_REGISTRY:-registry.opencode.de/opentalk}/controller:${OT_CONTROLLER_IMAGE_TAG:-v0.1}
+    image: ${OT_IMAGE_REGISTRY:-registry.opencode.de}/opentalk/controller:${OT_CONTROLLER_IMAGE_TAG:-v0.1}
     profiles: ["core", "controller"]
     restart: always
     depends_on:
@@ -152,7 +152,7 @@ services:
 
   # *** janus gateway***
   janus:
-    image: ${OT_IMAGE_REGISTRY:-registry.opencode.de/opentalk}/janus-gateway:${JANUS_IMAGE_TAG:-latest}
+    image: ${OT_IMAGE_REGISTRY:-registry.opencode.de}/opentalk/janus-gateway:${JANUS_IMAGE_TAG:-latest}
     profiles: ["core", "janus", "controller", "obelisk"]
     restart: always
     network_mode: host
@@ -179,7 +179,7 @@ services:
 
   # *** obelisk ***
   obelisk:
-    image: ${OT_IMAGE_REGISTRY:-registry.opencode.de/opentalk}obelisk:${OT_OBELISK_IMAGE_TAG:-latest}
+    image: ${OT_IMAGE_REGISTRY:-registry.opencode.de}/opentalk/obelisk:${OT_OBELISK_IMAGE_TAG:-latest}
     profiles: ["obelisk"]
     network_mode: host
     restart: always
@@ -205,7 +205,7 @@ services:
 
   # *** mail worker ***
   mail-worker:
-    image: ${OT_IMAGE_REGISTRY:-registry.opencode.de/opentalk}smtp-mailer:${OT_MAIL_WORKER_IMAGE_TAG:-latest}
+    image: ${OT_IMAGE_REGISTRY:-registry.opencode.de}/opentalk/smtp-mailer:${OT_MAIL_WORKER_IMAGE_TAG:-latest}
     profiles: ["mail-worker"]
     restart: always
     depends_on:
@@ -223,7 +223,7 @@ services:
 
   # *** spacedeck ***
   spacedeck:
-    image: ${OT_IMAGE_REGISTRY:-registry.opencode.de/opentalk}/spacedeck:${SD_IMAGE_TAG:-latest}
+    image: ${OT_IMAGE_REGISTRY:-registry.opencode.de}/opentalk/spacedeck:${SD_IMAGE_TAG:-latest}
     profiles: ["spacedeck"]
     restart: always
     environment:
@@ -237,7 +237,7 @@ services:
 
   # *** etherpad ***
   etherpad:
-    image: ${OT_IMAGE_REGISTRY:-registry.opencode.de/opentalk}/etherpad:${EP_IMAGE_TAG:-latest}
+    image: ${OT_IMAGE_REGISTRY:-registry.opencode.de}/opentalk/etherpad:${EP_IMAGE_TAG:-latest}
     profiles: ["etherpad"]
     restart: always
     environment:
