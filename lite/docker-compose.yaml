@@ -87,7 +87,7 @@ services:
  
   # *** Web-Frontend
   web-frontend:
-    image: ${OT_IMAGE_REGISTRY:-registry.opencode.de}/opentalk/web-frontend:${OT_FRONTEND_IMAGE_TAG:-v1}
+    image: ${OT_WEBFRONTEND_IMAGE_SRC:-registry.opencode.de/opentalk/web-frontend}:${OT_FRONTEND_IMAGE_TAG:-v1}
     profiles: ["core", "web-frontend"]
     restart: always
     ports:
