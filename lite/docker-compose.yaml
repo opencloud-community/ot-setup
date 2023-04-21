@@ -243,6 +243,7 @@ services:
     environment:
       EP_APIKEY: ${EP_APIKEY:-}
       TRUST_PROXY: ${TRUST_PROXY:-true}
+      SUPPRESS_ERRORS_IN_PAD_TEXT: ${SUPPRESS_ERRORS_IN_PAD_TEXT:-true}
+      DEFAULT_PAD_TEXT: ${DEFAULT_PAD_TEXT:-Willkommen bei OpenTalk!}
     ports:
       - "${EP_EXP_PORT:-9001}:${EP_PORT:-9001}"
-
