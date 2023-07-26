@@ -1,7 +1,7 @@
-lite/.env
-lite/data/kc_data/h2/
-lite/data/kc_data/tmp/
-lite/data/pg_data/
-lite/data/minio/
-lite/config/
+.env
+data/kc_data/h2/
+data/kc_data/tmp/
+data/pg_data/
+data/minio/
+config/
 
