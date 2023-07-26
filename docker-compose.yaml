@@ -152,7 +152,7 @@ services:
 
   # *** janus gateway***
   janus:
-    image: ${JANUS_IMAGE_SRC:-registry.opencode.de/opentalk/janus-gateway}:${JANUS_IMAGE_TAG:-0.13.4}
+    image: ${JANUS_IMAGE_SRC:-registry.opencode.de/opentalk/janus-gateway}:${JANUS_IMAGE_TAG:-v0.13.4}
     profiles: ["core", "janus"]
     restart: always
     network_mode: host
