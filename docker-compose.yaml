@@ -41,7 +41,7 @@ services:
       OPENTALK_CTRL_DATABASE__URL: "postgres://${POSTGRES_USER:-ot}:${POSTGRES_PASSWORD:-pgpassword}@${POSTGRES_HOST:-localhost}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-opentalk}"
       OPENTALK_CTRL_DATABASE__MAX_CONNECTIONS: "${POSTGRES_MAX_CONNECTIONS:-100}"
       OPENTALK_CTRL_HTTP_PORT: ""
-      
+
     #volumes:
     #  - ${OPENTALK_CONTAINER_CONFIG_FILE:-./config/controller.toml}:/controller/config.toml
 
@@ -152,7 +152,7 @@ services:
     # ports:
     #  - ${POSTGRES_EXP_PORT:-5432}:5432
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:-k3k}
+      POSTGRES_DB: ${POSTGRES_DB:-opentalk}
       POSTGRES_USER: ${POSTGRES_USER:-ot}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
  
