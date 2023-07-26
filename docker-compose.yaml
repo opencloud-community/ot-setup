@@ -119,15 +119,6 @@ services:
     image: ${OT_CONTROLLER_IMAGE_SRC:-registry.opencode.de/opentalk/controller}:${OT_CONTROLLER_IMAGE_TAG:-v0.5.0}
     profiles: ["core", "controller"]
     restart: always
-    depends_on:
-      keycloak:
-        condition: service_healthy
-      rabbit:
-        condition: service_healthy
-      janus:
-        condition: service_healthy
-      minio:
-        condition: service_healthy
     ports:
       - ${OT_CONTROLLER_EXP_PORT:-8090}:11311
     volumes:
@@ -156,8 +147,6 @@ services:
     profiles: ["core", "janus"]
     restart: always
     network_mode: host
-    depends_on:
-      - rabbit
     command:
       - janus
     environment:
@@ -183,11 +172,6 @@ services:
     profiles: ["obelisk"]
     network_mode: host
     restart: always
-    depends_on:
-      rabbit:
-        condition: service_healthy
-      janus:
-        condition: service_healthy
     environment:
       RUST_LOG: ${RUST_LOG:-info}
       GST_DEBUG: ${GST_DEBUG:-2}
@@ -208,9 +192,6 @@ services:
     image: ${OT_MAIL_WORKER_IMAGE_SRC:-registry.opencode.de/opentalk/smtp-mailer}:${OT_MAIL_WORKER_IMAGE_TAG:-v0.3.0}
     profiles: ["mail-worker"]
     restart: always
-    depends_on:
-      rabbit:
-        condition: service_healthy
     #volumes:
     #  - ${OT_MAIL_WORKER_CONFIG_FILE:-./config/mail-worker.toml}:/opt/smtp-mailer/config.toml
     environment:
