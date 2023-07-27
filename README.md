@@ -33,6 +33,7 @@ In the current state, the configuration that is ready to use out-of-the-box, cov
 | Service      | core      |
 |--------------|-----------|
 | Keycloak     | X         |
+| postgresql   | X         |
 | autoheal     | X         |
 | rabbitmq     | X         |
 | redis        | X         |
