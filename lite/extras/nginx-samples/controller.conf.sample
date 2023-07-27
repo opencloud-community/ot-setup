@@ -12,7 +12,7 @@ server {
     listen       [::]:80;
     server_name  controller.example.com;
 
-    include snippets/letsencrypt.conf;
+    # include snippets/letsencrypt.conf;
 
     location / {
         access_log off;
@@ -25,9 +25,8 @@ server {
     listen       [::]:443 ssl http2;
     server_name  controller.example.com;
 
-    ssl_certificate         /etc/ssl/letsencrypt/crt/fullchain_controller.example.com.crt;
-    ssl_certificate_key     /etc/ssl/letsencrypt/key/controller.example.com.key;
-    ssl_trusted_certificate /etc/ssl/letsencrypt/crt/controller.example.com-intermediate.crt;
+    ssl_certificate         /etc/letsencrypt/live/example.com/fullchain.pem;
+    ssl_certificate_key     /etc/letsencrypt/live/example.com/privkey.pem;
 
     root controller.example.com;
 

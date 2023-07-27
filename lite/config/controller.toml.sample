@@ -18,12 +18,12 @@
 #jaeger_agent_endpoint = "localhost:6831"
 
 # Service name when using opentelemetry
-#service_name = "k3k-controller"
+#service_name = "opentalk-controller"
 
 
 [database]
 # URL used to connect to a postgres.
-url = "postgres://ot:<MyPostgresPW>@postgres:5432/k3k"
+url = "postgres://ot:<MyPostgresPW>@postgres:5432/opentalk"
 
 # Maximum number of connections allowed to the server.
 # Defaults to 100 which is the default of postgres.
@@ -120,7 +120,7 @@ url = "redis://redis:6379/"
 #    "turns:127.0.0.1:5349?transport=tcp"
 #]
 # The Pre Shared Key set with --static-auth-secret=...
-#pre_shared_key = "k3k2"
+#pre_shared_key = "<myS3cr37>"
 
 #[stun]
 #uris = ["stun:127.0.0.1:3478"]

@@ -13,3 +13,6 @@ ssl_stapling_verify on;
 
 add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" always;
 
+### openssl command to generate DH parameters:
+#   openssl dhparam -out /etc/ssl/dhparam.pem 4096
+ssl_dhparam /etc/ssl/dhparam.pem;

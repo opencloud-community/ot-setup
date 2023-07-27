@@ -12,7 +12,7 @@ server {
     listen       [::]:80;
     server_name  whiteboard.example.com;
 
-    include snippets/letsencrypt.conf;
+    # include snippets/letsencrypt.conf;
     
     location / {
         access_log off;
@@ -25,9 +25,8 @@ server {
     listen       [::]:443 ssl http2;
     server_name  whiteboard.example.com;
 
-    ssl_certificate         /etc/ssl/letsencrypt/crt/fullchain_whiteboard.example.com.crt;
-    ssl_certificate_key     /etc/ssl/letsencrypt/key/whiteboard.example.com.key;
-    ssl_trusted_certificate /etc/ssl/letsencrypt/crt/whiteboard.example.com-intermediate.crt;
+    ssl_certificate         /etc/letsencrypt/live/example.com/fullchain.pem;
+    ssl_certificate_key     /etc/letsencrypt/live/example.com/privkey.pem;
     
     root whiteboard.example.com;
 
