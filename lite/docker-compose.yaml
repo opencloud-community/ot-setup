@@ -4,7 +4,7 @@ services:
   # *** KEYCLOAK ***
   keycloak:
     image: quay.io/keycloak/keycloak:${KC_IMAGE_TAG:-20.0}
-    profiles: ["core", "keycloak", "controller"]
+    profiles: ["core", "keycloak"]
     restart: always
     environment:
       KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN:-admin}
@@ -39,15 +39,15 @@ services:
  
   # *** POSTGRES ***
   postgres:
-    image: postgres:${POSTGRES_IMAGE_TAG:-13-alpine}
-    profiles: ["core", "postgres", "controller"]
+    image: postgres:${POSTGRES_IMAGE_TAG:-15-alpine}
+    profiles: ["core", "postgres"]
     volumes:
       - ${POSTGRES_HOST_DATA_DIR:-./data/pg_data}:/var/lib/postgresql/data
     restart: always
     # ports:
     #  - ${POSTGRES_EXP_PORT:-5432}:5432
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:-k3k}
+      POSTGRES_DB: ${POSTGRES_DB:-opentalk}
       POSTGRES_USER: ${POSTGRES_USER:-ot}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
  
@@ -63,8 +63,8 @@ services:
 
   # *** RabbitMQ ***
   rabbit:
-    image: rabbitmq:${RABBITMQ_IMAGE_TAG:-3.10-management-alpine}
-    profiles: ["core", "rabbit", "janus", "controller", "obelisk", "mail-worker", "recorder"]
+    image: rabbitmq:${RABBITMQ_IMAGE_TAG:-3.12-management-alpine}
+    profiles: ["core", "rabbit"]
     restart: always
     ports:
       - ${RABBITMQ_EXP_NODE_PORT:-5672}:5672
@@ -79,7 +79,7 @@ services:
  
   # *** Redis ***
   redis:
-    image: redis:${REDIS_IMAGE_TAG:-alpine}
+    image: redis:${REDIS_IMAGE_TAG:-7-alpine}
     profiles: ["core", "redis", "controller"]
     restart: always
     # ports:
@@ -87,7 +87,7 @@ services:
  
   # *** Web-Frontend
   web-frontend:
-    image: registry.opencode.de/opentalk/web-frontend:${OT_FRONTEND_IMAGE_TAG:-v1}
+    image: registry.opencode.de/opentalk/web-frontend:${OT_FRONTEND_IMAGE_TAG:-v1.5.0}
     profiles: ["core", "web-frontend"]
     restart: always
     ports:
@@ -116,7 +116,7 @@ services:
 
   # *** controller ***
   controller:
-    image: registry.opencode.de/opentalk/controller:${OT_CONTROLLER_IMAGE_TAG:-v0.1}
+    image: registry.opencode.de/opentalk/controller:${OT_CONTROLLER_IMAGE_TAG:-v0.5.0}
     profiles: ["core", "controller"]
     restart: always
     depends_on:
@@ -135,8 +135,8 @@ services:
 
   # *** minio ***
   minio:
-    image: minio/minio:${MINIO_IMAGE_TAG:-RELEASE.2023-01-02T09-40-09Z.hotfix.5c99bdd49}
-    profiles: ["core", "minio", "controller"]
+    image: minio/minio:${MINIO_IMAGE_TAG:-RELEASE.2023-07-21T21-12-44Z}
+    profiles: ["core", "minio"]
     restart: always
     command: minio server /data
     volumes:
@@ -152,8 +152,8 @@ services:
 
   # *** janus gateway***
   janus:
-    image: registry.opencode.de/opentalk/janus-gateway:${JANUS_IMAGE_TAG:-latest}
-    profiles: ["core", "janus", "controller", "obelisk"]
+    image: registry.opencode.de/opentalk/janus-gateway:${JANUS_IMAGE_TAG:-v0.13.4}
+    profiles: ["core", "janus"]
     restart: always
     network_mode: host
     depends_on:
@@ -179,7 +179,7 @@ services:
 
   # *** obelisk ***
   obelisk:
-    image: registry.opencode.de/opentalk/obelisk:${OT_OBELISK_IMAGE_TAG:-latest}
+    image: registry.opencode.de/opentalk/obelisk:${OT_OBELISK_IMAGE_TAG:-v0.3.0}
     profiles: ["obelisk"]
     network_mode: host
     restart: always
@@ -194,18 +194,21 @@ services:
       CONTROLLER_DOMAIN: ${CONTROLLER_DOMAIN:-controller.$OT_DOMAIN}
       SIP_ADDR: "${SIP_ADDR:-0.0.0.0}"
       SIP_PORT: "${SIP_PORT:-5060}"
-      SIP_USER: "${SIP_USER:-mysipuser}"
-      SIP_PASSWORD: "${SIP_PASSWORD:-mysippw}"
-      SIP_REALM: "${SIP_REALM:-SIP_REALM}"
-      SIP_REGISTRAR: "${SIP_REGISTRAR:-sip:yoursipprovider.com}"
-      SIP_STUN_SERVER: "${SIP_STUN_SERVER:-stun.yoursipprovider.com:3478}"
+      SIP_USER: "${SIP_USER:-}"
+      SIP_PASSWORD: "${SIP_PASSWORD:-}"
+      SIP_REALM: "${SIP_REALM:-}"
+      SIP_REGISTRAR: "${SIP_REGISTRAR:-}"
+      SIP_STUN_SERVER: "${SIP_STUN_SERVER:-}"
       SIP_ENFORCE_QOP: "${SIP_ENFORCE_QOP:-true}"
       SIP_RTP_PORT_RANGE_START: "${SIP_RTP_PORT_RANGE_START:-40000}"
       SIP_RTP_PORT_RANGE_END: "${SIP_RTP_PORT_RANGE_END:-49999}"
+    # volumes:
+    #   - ./config/obelisk.toml:/obelisk/config.toml
+
 
   # *** mail worker ***
   mail-worker:
-    image: registry.opencode.de/opentalk/smtp-mailer:${OT_MAIL_WORKER_IMAGE_TAG:-latest}
+    image: registry.opencode.de/opentalk/smtp-mailer:${OT_MAIL_WORKER_IMAGE_TAG:-v0.3.0}
     profiles: ["mail-worker"]
     restart: always
     depends_on:
@@ -216,14 +219,14 @@ services:
     environment:
       RUST_LOG: ${RUST_LOG:-info}
       MAILER_SMTP__SERVER: "${SMTP_SERVER:-}"
-      MAILER_FRONTEND__BASE_URL: "https://$OT_DOMAIN"
+      MAILER_FRONTEND__BASE_URL: "${MAILER_FRONTEND__BASE_URL:-https://$OT_DOMAIN}"
       MAILER_LANGUAGES__DEFAULT_LANGUAGE: "${LANGUAGES_DEFAULT_LANGUAGE:-de-DE}"
       MAILER_RABBITMQ__MAIL_TASK_QUEUE: "${RABBITMQ_MAIL_TASK_QUEUE:-opentalk_mailer}"
       MAILER_RABBITMQ__URL: "${RABBITMQ_URL:-amqp://rabbit/%2F}"
 
   # *** spacedeck ***
   spacedeck:
-    image: registry.opencode.de/opentalk/spacedeck:${SD_IMAGE_TAG:-latest}
+    image: registry.opencode.de/opentalk/spacedeck:${SD_IMAGE_TAG:-v1.0.2}
     profiles: ["spacedeck"]
     restart: always
     environment:
@@ -237,7 +240,7 @@ services:
 
   # *** etherpad ***
   etherpad:
-    image: registry.opencode.de/opentalk/etherpad:${EP_IMAGE_TAG:-latest}
+    image: registry.opencode.de/opentalk/etherpad:${EP_IMAGE_TAG:-v1.0.2}
     profiles: ["etherpad"]
     restart: always
     environment:
