@@ -68,8 +68,8 @@ Get valid SSL certificates for your DNS records at the certificate authority of 
 Set up a reverse proxy that terminates the SSL connections and forward the requests to the appropriate OpenTalk upstream services.
 When you use the default ports, the services listen on the following ports on the local interface:
 
-- frontend:    localhost:8090
-- controller:  localhost:8080
+- frontend:    localhost:8080
+- controller:  localhost:8090
 - keycloak:    localhost:8087
 
 We recommend using nginx as reverse-proxy. Please refer the [official nginx documentation](https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/) for further information.
