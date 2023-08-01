@@ -54,12 +54,10 @@ client_secret = "<MyKcClientSecret>"
 
 [room_server]
 # Maximum bitrate allowed for media sessions that will be used to transmit webcam video/audio
-# Example: 1.5 Mbit/s
-max_video_bitrate = "1600000"
+max_video_bitrate = "800000"
 
 # Maximum bitrate allowed for media sessions used for screen share
-# Example: 1MB/s
-max_screen_bitrate = "8000000"
+max_screen_bitrate = "1200000"
 
 # Number of packets with with given `speaker_focus_level`
 # needed to detect a speaking participant. 
