@@ -26,6 +26,28 @@ Installed with a Linux distribution of your choice.
 To run OpenTalk with this deployment method, you need to have the `docker engine` and the plugin `compose` to be installed.
 Please refer to the official documentation for **[docker engine](https://docs.docker.com/engine/install)** and the **[docker compose plugin](https://docs.docker.com/compose/install/linux)**.
 
+We define the running application stack via a `docker-compose.yaml` file and we use the feature **[profiles](https://docs.docker.com/compose/profiles/)** to handle different deployment scenarios.
+
+In the current state, the configuration that is ready to use out-of-the-box, covers the services tagged with the profile `core`.
+
+| Service      | core      |
+|--------------|-----------|
+| Keycloak     | X         |
+| postgresql   | X         |
+| autoheal     | X         |
+| rabbitmq     | X         |
+| redis        | X         |
+| web-frontend | X         |
+| controller   | X         |
+| minio        | X         |
+| janus-gateway| X         |
+| obelisk      |           |
+| smtp-mailer  |           |
+| spacedeck    |           |
+| etherpad     |           |
+
+Of course, you can **extend** the OpenTalk lite setup to run all services available in the `docker-compose.yaml` file. However, this requires further configuration steps that are not part of this quick install guide. We will provide instructions for an extended setup later.
+
 ### open Firewall ports
 
 Ensure, that the ports `80/tcp`, `443/tcp` and `20000-25000/udp` are opened in your firewall and accessible from public.
@@ -46,8 +68,8 @@ Get valid SSL certificates for your DNS records at the certificate authority of 
 Set up a reverse proxy that terminates the SSL connections and forward the requests to the appropriate OpenTalk upstream services.
 When you use the default ports, the services listen on the following ports on the local interface:
 
-- frontend:    localhost:8090
-- controller:  localhost:8080
+- frontend:    localhost:8080
+- controller:  localhost:8090
 - keycloak:    localhost:8087
 
 We recommend using nginx as reverse-proxy. Please refer the [official nginx documentation](https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/) for further information.
