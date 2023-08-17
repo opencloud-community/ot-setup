@@ -3,7 +3,7 @@ version: "3.9"
 services:
   # *** KEYCLOAK ***
   keycloak:
-    image: quay.io/keycloak/keycloak:${KC_IMAGE_TAG:-20.0}
+    image: ${KC_IMAGE_SRC:-quay.io/keycloak/keycloak}:${KC_IMAGE_TAG:-20.0}
     profiles: ["core", "keycloak"]
     restart: always
     environment:
@@ -39,7 +39,7 @@ services:
  
   # *** POSTGRES ***
   postgres:
-    image: postgres:${POSTGRES_IMAGE_TAG:-15-alpine}
+    image: ${POSTGRES_IMAGE_SRC:-postgres}:${POSTGRES_IMAGE_TAG:-15-alpine}
     profiles: ["core", "postgres"]
     volumes:
       - ${POSTGRES_HOST_DATA_DIR:-./data/pg_data}:/var/lib/postgresql/data
@@ -53,7 +53,7 @@ services:
  
   # *** AUTOHEAL ***
   autoheal:
-    image: willfarrell/autoheal:${AUTOHEAL_IMAGE_TAG:-latest}
+    image: ${AUTOHEAL_IMAGE_SRC:-willfarrell/autoheal}:${AUTOHEAL_IMAGE_TAG:-latest}
     profiles: ["core", "keycloak", "postgres", "rabbit", "web-frontend", "controller", "janus"]
     restart: always
     environment:
@@ -63,7 +63,7 @@ services:
 
   # *** RabbitMQ ***
   rabbit:
-    image: rabbitmq:${RABBITMQ_IMAGE_TAG:-3.12-management-alpine}
+    image: ${RABBITMQ_IMAGE_SRC:-rabbitmq}:${RABBITMQ_IMAGE_TAG:-3.12-management-alpine}
     profiles: ["core", "rabbit"]
     restart: always
     ports:
@@ -79,7 +79,7 @@ services:
  
   # *** Redis ***
   redis:
-    image: redis:${REDIS_IMAGE_TAG:-7-alpine}
+    image: ${REDIS_IMAGE_SRC:-redis}:${REDIS_IMAGE_TAG:-7-alpine}
     profiles: ["core", "redis", "controller"]
     restart: always
     # ports:
@@ -87,7 +87,7 @@ services:
  
   # *** Web-Frontend
   web-frontend:
-    image: registry.opencode.de/opentalk/web-frontend:${OT_FRONTEND_IMAGE_TAG:-v1.5.0}
+    image: ${OT_FRONTEND_IMAGE_SRC:-registry.opencode.de/opentalk/web-frontend}:${OT_FRONTEND_IMAGE_TAG:-v1.5.0}
     profiles: ["core", "web-frontend"]
     restart: always
     ports:
@@ -116,7 +116,7 @@ services:
 
   # *** controller ***
   controller:
-    image: registry.opencode.de/opentalk/controller:${OT_CONTROLLER_IMAGE_TAG:-v0.5.0}
+    image: ${OT_CONTROLLER_IMAGE_SRC:-registry.opencode.de/opentalk/controller}:${OT_CONTROLLER_IMAGE_TAG:-v0.5.0}
     profiles: ["core", "controller"]
     restart: always
     depends_on:
@@ -135,7 +135,7 @@ services:
 
   # *** minio ***
   minio:
-    image: minio/minio:${MINIO_IMAGE_TAG:-RELEASE.2023-07-21T21-12-44Z}
+    image: ${MINIO_IMAGE_SRC:-minio/minio}:${MINIO_IMAGE_TAG:-RELEASE.2023-07-21T21-12-44Z}
     profiles: ["core", "minio"]
     restart: always
     command: minio server /data
@@ -152,7 +152,7 @@ services:
 
   # *** janus gateway***
   janus:
-    image: registry.opencode.de/opentalk/janus-gateway:${JANUS_IMAGE_TAG:-v0.13.4}
+    image: ${JANUS_IMAGE_SRC:-registry.opencode.de/opentalk/janus-gateway}:${JANUS_IMAGE_TAG:-v0.13.4}
     profiles: ["core", "janus"]
     restart: always
     network_mode: host
@@ -179,7 +179,7 @@ services:
 
   # *** obelisk ***
   obelisk:
-    image: registry.opencode.de/opentalk/obelisk:${OT_OBELISK_IMAGE_TAG:-v0.3.0}
+    image: ${OT_OBELISK_IMAGE_SRC:-registry.opencode.de/opentalk/obelisk}:${OT_OBELISK_IMAGE_TAG:-v0.3.0}
     profiles: ["obelisk"]
     network_mode: host
     restart: always
@@ -208,7 +208,7 @@ services:
 
   # *** mail worker ***
   mail-worker:
-    image: registry.opencode.de/opentalk/smtp-mailer:${OT_MAIL_WORKER_IMAGE_TAG:-v0.3.0}
+    image: ${OT_MAIL_WORKER_IMAGE_SRC:-registry.opencode.de/opentalk/smtp-mailer}:${OT_MAIL_WORKER_IMAGE_TAG:-v0.3.0}
     profiles: ["mail-worker"]
     restart: always
     depends_on:
@@ -226,7 +226,7 @@ services:
 
   # *** spacedeck ***
   spacedeck:
-    image: registry.opencode.de/opentalk/spacedeck:${SD_IMAGE_TAG:-v1.0.2}
+    image: ${SD_IMAGE_SRC:-registry.opencode.de/opentalk/spacedeck}:${SD_IMAGE_TAG:-v1.0.2}
     profiles: ["spacedeck"]
     restart: always
     environment:
@@ -240,12 +240,14 @@ services:
 
   # *** etherpad ***
   etherpad:
-    image: registry.opencode.de/opentalk/etherpad:${EP_IMAGE_TAG:-v1.0.2}
+    image: ${EP_IMAGE_SRC:-registry.opencode.de/opentalk/etherpad}:${EP_IMAGE_TAG:-v1.0.2}
     profiles: ["etherpad"]
     restart: always
+    ports:
+      - "${EP_EXP_PORT:-9001}:${EP_PORT:-9001}"
     environment:
       EP_APIKEY: ${EP_APIKEY:-}
       TRUST_PROXY: ${TRUST_PROXY:-true}
-    ports:
-      - "${EP_EXP_PORT:-9001}:${EP_PORT:-9001}"
+      DEFAULT_PAD_TEXT: "Welcome to OpenTalk!\n\nAuthorized conference participants can collaborate on this document simultaneously. Changes will be visible to everyone instantly..."
+
 
