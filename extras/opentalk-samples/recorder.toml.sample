@@ -1,0 +1,12 @@
+[auth]
+issuer = "https://example.org/auth/realms/MyRealm"
+client_id = "Obelisk"
+client_secret = "INSERT_KEY"
+
+[controller]
+domain = "controller.example.org"
+insecure = false
+
+[rabbitmq]
+url = "amqp://guest:guest@rabbit/%2F"
+queue = "recorder"

@@ -23,7 +23,7 @@
 
 [database]
 # URL used to connect to a postgres.
-url = "postgres://ot:<MyPostgresPW>@postgres:5432/opentalk"
+url = "postgres://ot:MyPostgresPW@postgres:5432/opentalk"
 
 # Maximum number of connections allowed to the server.
 # Defaults to 100 which is the default of postgres.
@@ -38,19 +38,19 @@ url = "postgres://ot:<MyPostgresPW>@postgres:5432/opentalk"
 # The port to bind the HTTP Server to (defaults to 11311).
 port = 11311
 # URLs that requests are allowed from. Leave empty to allow all.
-cors.allowed_origin = ["https://<MyOtDomain>"]
+cors.allowed_origin = ["https://example.org"]
 
 # Settings for the keycloak which is the user provider
 # and allows authentication via OIDC
 [keycloak]
 # URL to the keycloak
-base_url = "https://accounts.<MyOtDomain>/auth"
+base_url = "https://accounts.example.org/auth"
 # Name of the keycloak realm
 realm = "opentalk"
 # Client ID
 client_id = "OtBackend"
 # Client secret (application requires confidential client).
-client_secret = "<MyKcClientSecret>"
+client_secret = "MyKcClientSecret"
 
 [room_server]
 # Maximum bitrate allowed for media sessions that will be used to transmit webcam video/audio
@@ -118,7 +118,7 @@ url = "redis://redis:6379/"
 #    "turns:127.0.0.1:5349?transport=tcp"
 #]
 # The Pre Shared Key set with --static-auth-secret=...
-#pre_shared_key = "<myS3cr37>"
+#pre_shared_key = "MyS3cr37"
 
 #[stun]
 #uris = ["stun:127.0.0.1:3478"]
