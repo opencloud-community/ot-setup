@@ -575,7 +575,7 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "secret": "${KC_CLIENT_SECRET}",
+      "secret": "${KEYCLOAK_CLIENT_SECRET_CONTROLLER}",
       "redirectUris": [
         "https://${KC_DOMAIN}"
       ],
@@ -757,7 +757,7 @@
       "enabled" : true,
       "alwaysDisplayInConsole" : false,
       "clientAuthenticatorType" : "client-secret",
-      "secret" : "DCC8hjn763ygE1knxwmu9De48PbbJCgQ",
+      "secret" : "${KEYCLOAK_CLIENT_SECRET_RECORDER}",
       "redirectUris" : [ ],
       "webOrigins" : [ ],
       "notBefore" : 0,
@@ -832,7 +832,7 @@
       "enabled" : true,
       "alwaysDisplayInConsole" : false,
       "clientAuthenticatorType" : "client-secret",
-      "secret" : "PEDpx1CsM0ZYGidenPCGGr2kGWrOD6P8",
+      "secret" : "${KEYCLOAK_CLIENT_SECRET_OBELISK}",
       "redirectUris" : [ ],
       "webOrigins" : [ ],
       "notBefore" : 0,
@@ -1704,6 +1704,8 @@
     "strictTransportSecurity": "max-age=31536000; includeSubDomains"
   },
   "smtpServer": {},
+  "loginTheme" : "opentalk",
+  "accountTheme" : "opentalk",
   "eventsEnabled": true,
   "eventsExpiration": 7889238,
   "eventsListeners": [
