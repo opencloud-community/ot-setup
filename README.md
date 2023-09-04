@@ -9,6 +9,10 @@ This guide will take you through a quick installation to run a simple OpenTalk i
 To run an OpenTalk instance, we assume that a certain infrastructure configuration already exists.
 Please ensure, that the following resources are prepared.
 
+### Note for existing installations
+
+Starting with product version 1.4, the directory structure has changed. The 'lite' directory is no longer used. If necessary, move persistent data from `./lite/data/*` to `./data/``
+
 ### Server
 
 We recommend a virtual machine with a minimum configuration of:
@@ -45,6 +49,7 @@ In the current state, the configuration that is ready to use out-of-the-box, cov
 | smtp-mailer  |           |
 | spacedeck    |           |
 | etherpad     |           |
+| recorder     |           |
 
 Of course, you can **extend** the OpenTalk lite setup to run all services available in the `docker-compose.yaml` file. However, this requires further configuration steps that are not part of this quick install guide. We will provide instructions for an extended setup later.
 
@@ -74,7 +79,7 @@ When you use the default ports, the services listen on the following ports on th
 
 We recommend using nginx as reverse-proxy. Please refer the [official nginx documentation](https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/) for further information.
 
-As an inspiration, we provide configuration examples in the directory `./lite/extras/nginx-samples`. Customize it to your needs.
+As an inspiration, we provide configuration examples in the directory `./extras/nginx-samples`. Customize it to your needs.
 
 ## Setup OpenTalk services
 
@@ -86,10 +91,10 @@ Clone the git repository to a location of your choice. Since we are using direct
 git clone https://gitlab.opencode.de/opentalk/ot-setup.git /opt/opentalk
 ```
 
-Change to the directory `lite` inside this repository, and use it as base directory for the next steps.
+Change to the root of this repository, and use it as base directory for the next steps.
 
 ```bash
-cd /opt/opentalk/lite
+cd /opt/opentalk
 ```
 
 ### Prepare `docker compose` configuration
