@@ -33,7 +33,7 @@ services:
 
   # *** controller ***
   controller:
-    image: ${OPENTALK_CONTAINER_IMAGE_SRC:-registry.opencode.de/opentalk/controller}:${OPENTALK_CONTAINER_IMAGE_TAG:-v0.6.0}
+    image: ${OPENTALK_CONTAINER_IMAGE_SRC:-registry.opencode.de/opentalk/controller}:${OPENTALK_CONTAINER_IMAGE_TAG:-v0.6.2}
     profiles: ["core", "controller"]
     restart: always
     ports:
@@ -76,7 +76,7 @@ services:
 
   # *** obelisk ***
   obelisk:
-    image: ${OT_OBELISK_IMAGE_SRC:-registry.opencode.de/opentalk/obelisk}:${OT_OBELISK_IMAGE_TAG:-v0.4.1}
+    image: ${OT_OBELISK_IMAGE_SRC:-registry.opencode.de/opentalk/obelisk}:${OT_OBELISK_IMAGE_TAG:-v0.4.2}
     profiles: ["obelisk"]
     network_mode: host
     restart: always
@@ -89,7 +89,7 @@ services:
 
   # *** mail worker ***
   smtp-mailer:
-    image: ${MAIL_WORKER_IMAGE_SRC:-registry.opencode.de/opentalk/smtp-mailer}:${MAIL_WORKER_IMAGE_TAG:-v0.3.0}
+    image: ${MAIL_WORKER_IMAGE_SRC:-registry.opencode.de/opentalk/smtp-mailer}:${MAIL_WORKER_IMAGE_TAG:-v0.3.1}
     profiles: ["smtp-mailer"]
     restart: always
     volumes:
@@ -97,7 +97,7 @@ services:
 
   # *** recorder ***
   recorder:
-    image: ${RECORDER_IMAGE_SRC:-registry.opencode.de/opentalk/recorder}:${RECORDER_IMAGE_TAG:-v0.1.0-rc1}
+    image: ${RECORDER_IMAGE_SRC:-registry.opencode.de/opentalk/recorder}:${RECORDER_IMAGE_TAG:-v0.1.0-rc2}
     profiles: ["recorder"]
     restart: always
     environment:
