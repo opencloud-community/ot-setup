@@ -89,7 +89,7 @@ services:
 
   # *** mail worker ***
   smtp-mailer:
-    image: ${MAIL_WORKER_IMAGE_SRC:-registry.opencode.de/opentalk/smtp-mailer}:${MAIL_WORKER_IMAGE_TAG:-v0.3.2}
+    image: ${MAIL_WORKER_IMAGE_SRC:-registry.opencode.de/opentalk/smtp-mailer}:${MAIL_WORKER_IMAGE_TAG:-v0.3.3}
     profiles: ["smtp-mailer"]
     restart: always
     volumes:
