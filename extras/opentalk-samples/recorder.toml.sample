@@ -1,6 +1,6 @@
 [auth]
 issuer = "https://example.org/auth/realms/MyRealm"
-client_id = "Obelisk"
+client_id = "Recorder"
 client_secret = "INSERT_KEY"
 
 [controller]
