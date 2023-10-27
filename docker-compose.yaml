@@ -29,7 +29,7 @@ services:
       FEATURE_WHITEBOARD: ${FEATURE_WHITEBOARD:-true}
       FEATURE_PROTOCOL: ${FEATURE_PROTOCOL:-true}
       FEATURE_RECORDING: ${FEATURE_RECORDING:-false}
-      PRODUCT_VERSION: "1.5.3"
+      PRODUCT_VERSION: "1.5.4"
 
   # *** controller ***
   controller:
