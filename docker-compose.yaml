@@ -3,7 +3,7 @@ version: "3.9"
 services:
   # *** Web-Frontend
   web-frontend:
-    image: ${OT_FRONTEND_IMAGE_SRC:-registry.opencode.de/opentalk/web-frontend}:${OT_FRONTEND_IMAGE_TAG:-v1.6.1}
+    image: ${OT_FRONTEND_IMAGE_SRC:-registry.opencode.de/opentalk/web-frontend}:${OT_FRONTEND_IMAGE_TAG:-v1.7.1}
     profiles: ["core", "web-frontend"]
     restart: always
     ports:
@@ -29,11 +29,11 @@ services:
       FEATURE_WHITEBOARD: ${FEATURE_WHITEBOARD:-true}
       FEATURE_PROTOCOL: ${FEATURE_PROTOCOL:-true}
       FEATURE_RECORDING: ${FEATURE_RECORDING:-false}
-      PRODUCT_VERSION: "1.5.4"
+      PRODUCT_VERSION: "1.6.0"
 
   # *** controller ***
   controller:
-    image: ${OPENTALK_CONTAINER_IMAGE_SRC:-registry.opencode.de/opentalk/controller}:${OPENTALK_CONTAINER_IMAGE_TAG:-v0.6.3}
+    image: ${OPENTALK_CONTAINER_IMAGE_SRC:-registry.opencode.de/opentalk/controller}:${OPENTALK_CONTAINER_IMAGE_TAG:-v0.7.0}
     profiles: ["core", "controller"]
     restart: always
     ports:
@@ -76,7 +76,7 @@ services:
 
   # *** obelisk ***
   obelisk:
-    image: ${OT_OBELISK_IMAGE_SRC:-registry.opencode.de/opentalk/obelisk}:${OT_OBELISK_IMAGE_TAG:-v0.4.2}
+    image: ${OT_OBELISK_IMAGE_SRC:-registry.opencode.de/opentalk/obelisk}:${OT_OBELISK_IMAGE_TAG:-v0.5.0}
     profiles: ["obelisk"]
     network_mode: host
     restart: always
@@ -89,7 +89,7 @@ services:
 
   # *** mail worker ***
   smtp-mailer:
-    image: ${MAIL_WORKER_IMAGE_SRC:-registry.opencode.de/opentalk/smtp-mailer}:${MAIL_WORKER_IMAGE_TAG:-v0.3.3}
+    image: ${MAIL_WORKER_IMAGE_SRC:-registry.opencode.de/opentalk/smtp-mailer}:${MAIL_WORKER_IMAGE_TAG:-v0.4.0}
     profiles: ["smtp-mailer"]
     restart: always
     volumes:
@@ -97,7 +97,7 @@ services:
 
   # *** recorder ***
   recorder:
-    image: ${RECORDER_IMAGE_SRC:-registry.opencode.de/opentalk/recorder}:${RECORDER_IMAGE_TAG:-v0.1.0-rc.2}
+    image: ${RECORDER_IMAGE_SRC:-registry.opencode.de/opentalk/recorder}:${RECORDER_IMAGE_TAG:-v0.1.0-rc.4}
     profiles: ["recorder"]
     restart: always
     environment:
