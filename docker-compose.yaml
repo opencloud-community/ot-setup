@@ -100,12 +100,12 @@ services:
     image: ${RECORDER_IMAGE_SRC:-registry.opencode.de/opentalk/recorder}:${RECORDER_IMAGE_TAG:-v0.1.0}
     profiles: ["recorder"]
     restart: always
+    network_mode: host
     environment:
-      RUST_LOG: debug
-      OPENTALK_REC__CLIENT_SECRET: ${OPENTALK_REC__CLIENT_SECRET:-}
+      RUST_LOG: ${RUST_LOG:-info}
       OPENTALK_REC_AUTH__ISSUER: "https://accounts.${OT_DOMAIN}/auth/realms/${KC_REALM_ID:-opentalk}"  
       OPENTALK_REC_AUTH__CLIENT_ID: "Recorder"
-      OPENTALK_REC_AUTH__CLIENT_SECRET: k1q40x226ta2369vpfczvxa0o65r9o0n
+      OPENTALK_REC_AUTH__CLIENT_SECRET: ${KEYCLOAK_CLIENT_SECRET_RECORDER:-}
       OPENTALK_REC_RABBITMQ__URI: "amqp://rabbit/%2F"
       OPENTALK_REC_RABBITMQ__QUEUE: "opentalk_recorder"
       OPENTALK_REC_CONTROLLER__DOMAIN: "controller.${OT_DOMAIN}" 

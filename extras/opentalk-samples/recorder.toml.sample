@@ -1,5 +1,5 @@
 [auth]
-issuer = "https://example.org/auth/realms/MyRealm"
+issuer = "https://accounts.example.org/auth/realms/MyRealm"
 client_id = "Recorder"
 client_secret = "INSERT_KEY"
 
@@ -8,5 +8,5 @@ domain = "controller.example.org"
 insecure = false
 
 [rabbitmq]
-uri = "amqp://guest:guest@rabbit/%2F"
+uri = "amqp://guest:guest@localhost/%2F"
 queue = "opentalk_recorder"
