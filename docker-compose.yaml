@@ -33,11 +33,11 @@ services:
 
   # *** controller ***
   controller:
-    image: ${OPENTALK_CONTAINER_IMAGE_SRC:-registry.opencode.de/opentalk/controller}:${OPENTALK_CONTAINER_IMAGE_TAG:-v0.7.1-rc.1}
+    image: ${OPENTALK_CONTROLLER_IMAGE_SRC:-registry.opencode.de/opentalk/controller}:${OPENTALK_CONTROLLER_IMAGE_TAG:-v0.7.1-rc.1}
     profiles: ["core", "controller"]
     restart: always
     ports:
-      - ${OPENTALK_CONTAINER_EXP_PORT:-8090}:11311
+      - ${OPENTALK_CONTROLLER_EXP_PORT:-8090}:11311
     environment:
       RUST_LOG: info,k3k=debug,janus_client=info,k3k_janus_media::mcu=OFF
       OPENTALK_CTRL_DATABASE__URL: "postgres://${POSTGRES_USER:-ot}:${POSTGRES_PASSWORD}@${POSTGRES_HOST:-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-opentalk}"
@@ -72,7 +72,7 @@ services:
       OPENTALK_CTRL_CALL_IN__DEFAULT_COUNTRY_CODE: "${OPENTALK_CTRL_CALL_IN__DEFAULT_COUNTRY_CODE:-DE}"
       OPENTALK_CTRL_CALL_IN__ENABLE_PHONE_MAPPING: "${OPENTALK_CTRL_CALL_IN__ENABLE_PHONE_MAPPING:-false}"
     #volumes:
-    #  - ${OPENTALK_CONTAINER_CONFIG_FILE:-./config/controller.toml}:/controller/config.toml
+    #  - ${OPENTALK_CONTROLLER_CONFIG_FILE:-./config/controller.toml}:/controller/config.toml
 
   # *** obelisk ***
   obelisk:
