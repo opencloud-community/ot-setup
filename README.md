@@ -171,6 +171,10 @@ cors.allowed_origin = ["https://example.org"]
 base_url = "https://accounts.example.org/auth"
 ```
 
+#### Optional: Advanced configuration method using environment variables
+
+It is also possible to set configuration options using environment variables. In this case, the environment variables take precedence over the settings defined in the `*.toml` configuration files. The `docker-compose.yaml` and `.env` files contain predefined variables with common defaults. It is best practice to use the `.env` file to overwrite the default values and keep the `docker-compose.yaml` file untouched if possible. Please refer to the official [Docker Compose documentation](https://docs.docker.com/compose/environment-variables/set-environment-variables/) for further information about using environment variables in the `docker-compose.yaml` file. The available environment variables and limitations are described in the configuration section in the [admin documentation](https://docs.opentalk.eu/admin/) for each OpenTalk service.
+
 ### Run the OpenTalk stack
 
 ```bash
