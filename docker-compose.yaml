@@ -71,8 +71,8 @@ services:
       OPENTALK_CTRL_CALL_IN__TEL: "${OPENTALK_CTRL_CALL_IN__TEL:-}"
       OPENTALK_CTRL_CALL_IN__DEFAULT_COUNTRY_CODE: "${OPENTALK_CTRL_CALL_IN__DEFAULT_COUNTRY_CODE:-DE}"
       OPENTALK_CTRL_CALL_IN__ENABLE_PHONE_MAPPING: "${OPENTALK_CTRL_CALL_IN__ENABLE_PHONE_MAPPING:-false}"
-    #volumes:
-    #  - ${OPENTALK_CONTROLLER_CONFIG_FILE:-./config/controller.toml}:/controller/config.toml
+    volumes:
+      - ${OPENTALK_CONTROLLER_CONFIG_FILE:-./config/controller.toml}:/controller/config.toml
 
   # *** obelisk ***
   obelisk:
