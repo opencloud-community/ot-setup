@@ -209,7 +209,7 @@ services:
   # *** POSTGRES ***
   postgres:
     image: postgres:${POSTGRES_IMAGE_TAG:-15-alpine}
-    profiles: ["core", "postgres", "controller"]
+    profiles: ["core", "postgres"]
     volumes:
       - ${POSTGRES_HOST_DATA_DIR:-./data/pg_data}:/var/lib/postgresql/data
     restart: always
@@ -233,7 +233,7 @@ services:
   # *** RabbitMQ ***
   rabbit:
     image: rabbitmq:${RABBITMQ_IMAGE_TAG:-3.12-management-alpine}
-    profiles: ["core", "rabbit", "controller", "obelisk", "smtp-mailer", "recorder"]
+    profiles: ["core", "rabbit"]
     restart: always
     ports:
       - ${RABBITMQ_EXP_NODE_PORT:-127.0.0.1:5672}:5672
@@ -249,7 +249,7 @@ services:
   # *** Redis ***
   redis:
     image: redis:${REDIS_IMAGE_TAG:-7-alpine}
-    profiles: ["core", "redis", "controller"]
+    profiles: ["core", "redis"]
     restart: always
     ports:
       - ${REDIS_EXP_PORT:-127.0.0.1:6379}:${REDIS_EXP_PORT:-6379}
@@ -257,7 +257,7 @@ services:
   # *** minio ***
   minio:
     image: minio/minio:${MINIO_IMAGE_TAG:-RELEASE.2023-07-21T21-12-44Z}
-    profiles: ["core", "minio", "controller"]
+    profiles: ["core", "minio"]
     restart: always
     command: minio server /data
     volumes:
