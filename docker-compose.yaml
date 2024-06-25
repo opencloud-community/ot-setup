@@ -28,11 +28,11 @@ services:
       FEATURE_WHITEBOARD: ${FEATURE_WHITEBOARD:-true}
       FEATURE_PROTOCOL: ${FEATURE_PROTOCOL:-true}
       FEATURE_RECORDING: ${FEATURE_RECORDING:-false}
-      PRODUCT_VERSION: "v24.7.0-rc.2"
+      PRODUCT_VERSION: "v24.7.0-rc.3"
 
   # *** controller ***
   controller:
-    image: ${OPENTALK_CONTROLLER_IMAGE_SRC:-registry.opencode.de/opentalk/controller}:${OPENTALK_CONTROLLER_IMAGE_TAG:-v0.15.0-rc.1}
+    image: ${OPENTALK_CONTROLLER_IMAGE_SRC:-registry.opencode.de/opentalk/controller}:${OPENTALK_CONTROLLER_IMAGE_TAG:-v0.15.0-rc.3}
     profiles: ["core", "controller"]
     restart: always
     ports:
@@ -88,7 +88,7 @@ services:
 
   # *** mail worker ***
   smtp-mailer:
-    image: ${MAIL_WORKER_IMAGE_SRC:-registry.opencode.de/opentalk/smtp-mailer}:${MAIL_WORKER_IMAGE_TAG:-v0.6.0-rc.1}
+    image: ${MAIL_WORKER_IMAGE_SRC:-registry.opencode.de/opentalk/smtp-mailer}:${MAIL_WORKER_IMAGE_TAG:-v0.6.0-rc.2}
     profiles: ["smtp-mailer"]
     restart: always
     volumes:
