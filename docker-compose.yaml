@@ -28,7 +28,7 @@ services:
       FEATURE_WHITEBOARD: ${FEATURE_WHITEBOARD:-true}
       FEATURE_PROTOCOL: ${FEATURE_PROTOCOL:-true}
       FEATURE_RECORDING: ${FEATURE_RECORDING:-false}
-      PRODUCT_VERSION: "v24.8.0-rc.1"
+      PRODUCT_VERSION: "v24.8.0-rc.2"
 
   # *** controller ***
   controller:
