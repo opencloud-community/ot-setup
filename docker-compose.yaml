@@ -96,7 +96,7 @@ services:
 
   # *** recorder ***
   recorder:
-    image: ${RECORDER_IMAGE_SRC:-registry.opencode.de/opentalk/recorder}:${RECORDER_IMAGE_TAG:-v0.4.0-rc.1}
+    image: ${RECORDER_IMAGE_SRC:-registry.opencode.de/opentalk/recorder}:${RECORDER_IMAGE_TAG:-v0.4.0-rc.2}
     profiles: ["recorder"]
     restart: always
     network_mode: host
