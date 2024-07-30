@@ -2,7 +2,7 @@
 services:
   # *** Web-Frontend
   web-frontend:
-    image: ${OT_FRONTEND_IMAGE_SRC:-registry.opencode.de/opentalk/web-frontend}:${OT_FRONTEND_IMAGE_TAG:-v1.17.1-rc.3}
+    image: ${OT_FRONTEND_IMAGE_SRC:-registry.opencode.de/opentalk/web-frontend}:${OT_FRONTEND_IMAGE_TAG:-v1.17.1}
     profiles: ["core", "web-frontend"]
     restart: always
     ports:
@@ -28,11 +28,11 @@ services:
       FEATURE_WHITEBOARD: ${FEATURE_WHITEBOARD:-true}
       FEATURE_PROTOCOL: ${FEATURE_PROTOCOL:-true}
       FEATURE_RECORDING: ${FEATURE_RECORDING:-false}
-      PRODUCT_VERSION: "v24.8.1-rc.1"
+      PRODUCT_VERSION: "v24.8.1"
 
   # *** controller ***
   controller:
-    image: ${OPENTALK_CONTROLLER_IMAGE_SRC:-registry.opencode.de/opentalk/controller}:${OPENTALK_CONTROLLER_IMAGE_TAG:-v0.16.1-rc.1}
+    image: ${OPENTALK_CONTROLLER_IMAGE_SRC:-registry.opencode.de/opentalk/controller}:${OPENTALK_CONTROLLER_IMAGE_TAG:-v0.16.1}
     profiles: ["core", "controller"]
     restart: always
     ports:
