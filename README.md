@@ -117,6 +117,8 @@ cp extras/opentalk-samples/controller.toml.sample config/controller.toml
 
 Customize the variables in `.env` according to your needs. In most cases, it is sufficient to adjust the values listed under `common variables`. You should always leave the `docker-compose.yaml` file unchanged to have an easier update process in future.
 
+You absolutely *have to* set `OT_DOMAIN` yourself to a domain you or your organization control.
+
 You can generate the secrets with the `gen-secrets.sh` helper script and simply copy + paste the secrets into the `.env` file.
 
 - Using the helper script is optional, you can also set the secrets manually.
