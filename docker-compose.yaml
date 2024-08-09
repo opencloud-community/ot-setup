@@ -28,7 +28,9 @@ services:
       FEATURE_WHITEBOARD: ${FEATURE_WHITEBOARD:-true}
       FEATURE_PROTOCOL: ${FEATURE_PROTOCOL:-true}
       FEATURE_RECORDING: ${FEATURE_RECORDING:-false}
+      WAITING_ROOM_DEFAULT_VALUE: ${WAITING_ROOM_DEFAULT_VALUE:-false}
       PRODUCT_VERSION: "v24.10.0-rc.1"
+
 
   # *** controller ***
   controller:
