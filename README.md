@@ -4,10 +4,18 @@
 
 This guide will take you through a quick installation to run a simple OpenTalk installation for a **small** setup on your own server. Be sure, that your network, firewall, domain names and certificates are configured properly before you start the OpenTalk services.
 
+For more information, please also refer our [documentation pages](https://https://docs.opentalk.eu).
+
+To stay informed about the latest releases, please visit our [Releases page](https://docs.opentalk.eu/releases/). There, you'll find detailed information on new features, bug fixes, and version changes.
+
 ## Prepare your deployment environment
 
 To run an OpenTalk instance, we assume that a certain infrastructure configuration already exists.
 Please ensure, that the following resources are prepared.
+
+### Note for existing installations
+
+Starting with product version 1.4, the directory structure has changed. The 'lite' directory is no longer used. If necessary, move persistent data from `./lite/data/*` to `./data/`
 
 ### Server
 
@@ -33,6 +41,7 @@ In the current state, the configuration that is ready to use out-of-the-box, cov
 | Service      | core      |
 |--------------|-----------|
 | Keycloak     | X         |
+| postgresql   | X         |
 | autoheal     | X         |
 | rabbitmq     | X         |
 | redis        | X         |
@@ -44,12 +53,13 @@ In the current state, the configuration that is ready to use out-of-the-box, cov
 | smtp-mailer  |           |
 | spacedeck    |           |
 | etherpad     |           |
+| recorder     |           |
 
 Of course, you can **extend** the OpenTalk lite setup to run all services available in the `docker-compose.yaml` file. However, this requires further configuration steps that are not part of this quick install guide. We will provide instructions for an extended setup later.
 
 ### open Firewall ports
 
-Ensure, that the ports `80/tcp`, `443/tcp` and `20000-25000/udp` are opened in your firewall and accessible from public.
+Ensure, that the ports `80/tcp`, `443/tcp` and `20000-40000/udp` are opened in your firewall and accessible from public.
 
 ### DNS records
 
@@ -67,13 +77,13 @@ Get valid SSL certificates for your DNS records at the certificate authority of 
 Set up a reverse proxy that terminates the SSL connections and forward the requests to the appropriate OpenTalk upstream services.
 When you use the default ports, the services listen on the following ports on the local interface:
 
-- frontend:    localhost:8090
-- controller:  localhost:8080
+- frontend:    localhost:8080
+- controller:  localhost:8090
 - keycloak:    localhost:8087
 
 We recommend using nginx as reverse-proxy. Please refer the [official nginx documentation](https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/) for further information.
 
-As an inspiration, we provide configuration examples in the directory `./lite/extras/nginx-samples`. Customize it to your needs.
+As an inspiration, we provide configuration examples in the directory `./extras/nginx-samples`. Customize it to your needs.
 
 ## Setup OpenTalk services
 
@@ -81,14 +91,16 @@ As an inspiration, we provide configuration examples in the directory `./lite/ex
 
 Clone the git repository to a location of your choice. Since we are using directory based docker volumes in this deployment guide, make sure there is enough storage on that location. We recommend using `/opt/opentalk` for this.
 
+Specify a release tag when you clone the git repository. Pick the current stable version from our [release page](https://docs.opentalk.eu/releases).
+
 ```bash
-git clone https://gitlab.opencode.de/opentalk/ot-setup.git /opt/opentalk
+git clone --branch v24.10.0 https://gitlab.opencode.de/opentalk/ot-setup.git /opt/opentalk
 ```
 
-Change to the directory `lite` inside this repository, and use it as base directory for the next steps.
+Change to the root of this repository, and use it as base directory for the next steps.
 
 ```bash
-cd /opt/opentalk/lite
+cd /opt/opentalk
 ```
 
 ### Prepare `docker compose` configuration
@@ -104,21 +116,22 @@ cp env.sample .env
 Create the controller configuration from the sample file `controller.toml.sample` located in `config/` directory.
 
 ```bash
-cp config/controller.toml.sample config/controller.toml
+cp extras/opentalk-samples/controller.toml.sample config/controller.toml
 ```
 
 #### Edit the `.env` file settings
 
 Customize the variables in `.env` according to your needs. In most cases, it is sufficient to adjust the values listed under `common variables`. You should always leave the `docker-compose.yaml` file unchanged to have an easier update process in future.
 
-##### OPTIONAL: generate secrets with the `gen-common-params.sh` helper script
+You absolutely *have to* set `OT_DOMAIN` yourself to a domain you or your organization control.
 
-To simply copy+paste the secrets into the .env file, you might find this helpful.
+You can generate the secrets with the `gen-secrets.sh` helper script and simply copy + paste the secrets into the `.env` file.
 
-**NOTE**: The script needs to have the package `pwgen` installed!
+- Using the helper script is optional, you can also set the secrets manually.
+- Note: The script needs to have the package pwgen installed!
 
 ```bash
-bash extras/gen-common-params.sh
+bash extras/gen-secrets.sh
 ```
 
 It produces an output that you can use to replace the header area in the `.env` file.
@@ -126,40 +139,49 @@ It produces an output that you can use to replace the header area in the `.env` 
 **Sample output:**
 
 ```bash
-###---> Common variables
-# Domain name on wich you want to access the frontend
-OT_DOMAIN=example.com
-
-POSTGRES_PASSWORD=zohWahnieceequairaiwee4k
-KEYCLOAK_ADMIN_PASSWORD=Ce4Xae8shaih9oghee1iehei
-KC_CLIENT_SECRET=ooleic2aewai5chiC9jae6iu 
-
-# If janus is running in docker host mode it needs a local host interface for rabbitmq to connect.
-# Use only a SINGLE line and uncomment it:
-# !!! DO NOT CHOOSE YOUR PUBLIC IP ADDRESS!!!
-# RABBITMQ_HOST=20.30.40.50
-# RABBITMQ_HOST=10.0.1.2
-# RABBITMQ_HOST=172.17.0.1
-# RABBITMQ_HOST=192.168.0.1
-###<---
+POSTGRES_PASSWORD=eeDowieghaiph6cootheitheethaJoob
+KEYCLOAK_ADMIN_PASSWORD=aepooghedeshe6eepo1ohth8aeGhu6La
+KEYCLOAK_CLIENT_SECRET_CONTROLLER=Cuipheich3imooch8si6uhie6Saph8so
+KEYCLOAK_CLIENT_SECRET_OBELISK=Aiyo5ooceilee6einguk6Egheiquaiph
+KEYCLOAK_CLIENT_SECRET_RECORDER=itoo2pieyohh6Aighiebietee7iefae7
+SPACEDECK_API_TOKEN=ohP2AeBirineimohS6Pha1oaphoapoM2
+SPACEDECK_INVITE_CODE=eij9weipaxohYiexoh1loo5zae8ic2ah
+ETHERPAD_API_KEY=iethae9aulo0ung6Tida6uquahmahphi
 ```
 
-#### Edit the config/controller.toml configuration file
+#### Add the secretes to the `config/controller.toml`
 
-Replace the placeholders in the `controller.toml` with the same values as you have already set in the `.env` file.
+Add your or the generated secrets to `config/controller.toml` stored in the `.env` file.
+Use the following sed snippets or as an alternative you can also edit the `config/controller.toml` manually.
+
+```bash
+source .env; sed -i "s/postgrespw/$POSTGRES_PASSWORD/g" config/controller.toml 
+source .env; sed -i "s/keycloakclientsecretforcontroller/$KEYCLOAK_CLIENT_SECRET_CONTROLLER/g" config/controller.toml 
+source .env; sed -i "s/spacedeckapitoken/$SPACEDECK_API_TOKEN/g" config/controller.toml 
+source .env; sed -i "s/etherpadapikey/$ETHERPAD_API_KEY/g" config/controller.toml 
+```
+
+#### Final adjustments to the `config/controller.toml`
+
+Open the `config/controller.toml` with your favorite editor.
 
 ```bash
 vi config/controller.toml
 ```
 
-Change the values for the configuration options:
+Change the following values to fit your needs:
 
 ```txt
-[database]/url              (placeholder: MyPostgresPW)
-[http]/cors.allowed_origin  (placeholder: MyOtDomain)
-[keycloak]/base_url         (placeholder: MyOtDomain)
-[keycloak]/client_secret    (placeholder: MyKcClientSecret)
+[http]
+cors.allowed_origin = ["https://example.org"]
+
+[keycloak]
+base_url = "https://accounts.example.org/auth"
 ```
+
+#### Optional: Advanced configuration method using environment variables
+
+It is also possible to set configuration options using environment variables. In this case, the environment variables take precedence over the settings defined in the `*.toml` configuration files. The `docker-compose.yaml` and `.env` files contain predefined variables with common defaults. It is best practice to use the `.env` file to overwrite the default values and keep the `docker-compose.yaml` file untouched if possible. Please refer to the official [Docker Compose documentation](https://docs.docker.com/compose/environment-variables/set-environment-variables/) for further information about using environment variables in the `docker-compose.yaml` file. The available environment variables and limitations are described in the configuration section in the [admin documentation](https://docs.opentalk.eu/admin/) for each OpenTalk service.
 
 ### Run the OpenTalk stack
 

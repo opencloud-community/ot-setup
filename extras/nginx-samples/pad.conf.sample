@@ -1,5 +1,5 @@
-upstream whiteboard {
-    server localhost:9666;
+upstream etherpad {
+    server localhost:9001;
 }
 
 map $http_upgrade $connection_upgrade {
@@ -10,9 +10,9 @@ map $http_upgrade $connection_upgrade {
 server {
     listen       80;
     listen       [::]:80;
-    server_name  whiteboard.example.com;
+    server_name  pad.example.com;
 
-    include snippets/letsencrypt.conf;
+    # include snippets/letsencrypt.conf;
     
     location / {
         access_log off;
@@ -23,18 +23,17 @@ server {
 server {
     listen       443 ssl http2;
     listen       [::]:443 ssl http2;
-    server_name  whiteboard.example.com;
+    server_name  pad.example.com;
 
-    ssl_certificate         /etc/ssl/letsencrypt/crt/fullchain_whiteboard.example.com.crt;
-    ssl_certificate_key     /etc/ssl/letsencrypt/key/whiteboard.example.com.key;
-    ssl_trusted_certificate /etc/ssl/letsencrypt/crt/whiteboard.example.com-intermediate.crt;
+    ssl_certificate         /etc/letsencrypt/live/example.com/fullchain.pem;
+    ssl_certificate_key     /etc/letsencrypt/live/example.com/privkey.pem;
     
-    root whiteboard.example.com;
+    root pad.example.com;
 
     include /etc/nginx/snippets/sslsettings.conf;
         
-    access_log  /var/log/nginx/https-access_whiteboard.example.com.log;
-    error_log  /var/log/nginx/https-error_whiteboard.example.com.log;
+    access_log  /var/log/nginx/https-access_pad.example.com.log;
+    error_log  /var/log/nginx/https-error_pad.example.com.log;
 
     
     location / {
@@ -44,6 +43,6 @@ server {
         proxy_buffers                       8 8k;
         proxy_buffer_size                   8k;
 
-        proxy_pass                          http://whiteboard;
+        proxy_pass                          http://etherpad;
     }
 }

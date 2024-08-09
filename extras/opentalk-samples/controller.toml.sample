@@ -18,12 +18,12 @@
 #jaeger_agent_endpoint = "localhost:6831"
 
 # Service name when using opentelemetry
-#service_name = "k3k-controller"
+#service_name = "opentalk-controller"
 
 
 [database]
 # URL used to connect to a postgres.
-url = "postgres://ot:<MyPostgresPW>@postgres:5432/k3k"
+url = "postgres://ot:postgrespw@postgres:5432/opentalk"
 
 # Maximum number of connections allowed to the server.
 # Defaults to 100 which is the default of postgres.
@@ -38,28 +38,26 @@ url = "postgres://ot:<MyPostgresPW>@postgres:5432/k3k"
 # The port to bind the HTTP Server to (defaults to 11311).
 port = 11311
 # URLs that requests are allowed from. Leave empty to allow all.
-cors.allowed_origin = ["https://<MyOtDomain>"]
+cors.allowed_origin = ["https://example.org"]
 
 # Settings for the keycloak which is the user provider
 # and allows authentication via OIDC
 [keycloak]
 # URL to the keycloak
-base_url = "https://accounts.<MyOtDomain>/auth"
+base_url = "https://accounts.example.org/auth"
 # Name of the keycloak realm
 realm = "opentalk"
 # Client ID
 client_id = "OtBackend"
 # Client secret (application requires confidential client).
-client_secret = "<MyKcClientSecret>"
+client_secret = "keycloakclientsecretforcontroller"
 
 [room_server]
 # Maximum bitrate allowed for media sessions that will be used to transmit webcam video/audio
-# Example: 1.5 Mbit/s
-max_video_bitrate = "1600000"
+max_video_bitrate = "800000"
 
 # Maximum bitrate allowed for media sessions used for screen share
-# Example: 1MB/s
-max_screen_bitrate = "8000000"
+max_screen_bitrate = "1200000"
 
 # Number of packets with with given `speaker_focus_level`
 # needed to detect a speaking participant. 
@@ -120,7 +118,7 @@ url = "redis://redis:6379/"
 #    "turns:127.0.0.1:5349?transport=tcp"
 #]
 # The Pre Shared Key set with --static-auth-secret=...
-#pre_shared_key = "k3k2"
+#pre_shared_key = "MyS3cr37"
 
 #[stun]
 #uris = ["stun:127.0.0.1:3478"]
@@ -157,12 +155,12 @@ secret_key = "minioadmin"
 #[etherpad]
 #url = "http://etherpad:9001"
 # Etherpads api key
-#api_key = "secret"
+#api_key = "etherpadapikey"
 
 # Spacedeck configuration
 #[spacedeck]
 #url = "http://spacedeck:9666"
-#api_key = "secret"
+#api_key = "spacedeckapitoken"
 
 # Default/fallback values
 #[defaults]
