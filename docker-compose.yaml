@@ -2,7 +2,8 @@
 services:
   # *** Web-Frontend
   web-frontend:
-    image: ${OT_FRONTEND_IMAGE_SRC:-registry.opencode.de/opentalk/web-frontend}:${OT_FRONTEND_IMAGE_TAG:-v1.20.0}
+    #image: ${OT_FRONTEND_IMAGE_SRC:-registry.opencode.de/opentalk/web-frontend}:${OT_FRONTEND_IMAGE_TAG:-v1.20.0}
+    image: git.opentalk.dev:5050/opentalk/frontend/web/web-app:1356_livekit-rebased
     profiles: ["core", "web-frontend"]
     restart: always
     ports:
@@ -12,6 +13,7 @@ services:
       BASE_URL: https://${OT_DOMAIN}
       OIDC_ISSUER: https://${KC_HOSTNAME:-accounts.${OT_DOMAIN}}/auth/realms/${KC_REALM_ID:-opentalk}
       OIDC_CLIENT_ID: ${OIDC_CLIENT_ID:-OtFrontend}
+      LIVEKIT_SERVER_URL: http://localhost:7880
       NDT_SERVER: ${NDT_SERVER:-ndt.example.com}
       CHANGE_PASSWORD_URL: https://${KC_HOSTNAME:-accounts.${OT_DOMAIN}}/auth/realms/${KC_REALM_ID:-opentalk}/account/
       ERROR_REPORT_ADDRESS: ${ERROR_REPORT_ADDRESS:-reports@example.com}
@@ -34,7 +36,8 @@ services:
 
   # *** controller ***
   controller:
-    image: ${OPENTALK_CONTROLLER_IMAGE_SRC:-registry.opencode.de/opentalk/controller}:${OPENTALK_CONTROLLER_IMAGE_TAG:-v0.19.1}
+    #image: ${OPENTALK_CONTROLLER_IMAGE_SRC:-registry.opencode.de/opentalk/controller}:${OPENTALK_CONTROLLER_IMAGE_TAG:-v0.19.1}
+    image: git.opentalk.dev:5050/opentalk/backend/services/controller:livekit
     profiles: ["core", "controller"]
     restart: always
     ports:
@@ -112,6 +115,15 @@ services:
       OPENTALK_REC_CONTROLLER__DOMAIN: "${CONTROLLER_DOMAIN:-controller.${OT_DOMAIN}}" 
     volumes:
       - ${RECORDER_CONFIG_FILE:-./config/recorder.toml}:/recorder/config.toml
+
+  livekit:
+    image: livekit/livekit-server:v1.7
+    profiles: ["livekit"]
+    network_mode: host
+    restart: always
+    command: --config /livekit.yaml --dev --node-ip 127.0.0.1
+    volumes:
+      - ./livekit.yaml:/livekit.yaml
 
   # *** janus gateway***
   janus:
