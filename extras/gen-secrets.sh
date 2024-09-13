@@ -10,7 +10,7 @@ if type "pwgen" > /dev/null; then
   echo "SPACEDECK_API_TOKEN=$(pwgen -s 32 1)"
   echo "SPACEDECK_INVITE_CODE=$(pwgen -s 32 1)"
   echo "ETHERPAD_API_KEY=$(pwgen -s 32 1)"
-  echo "LIVEKIT_KEYS_APIKEY=$(pwgen -s 32 1)"
+  echo "LIVEKIT_KEYS_API_SECRET=$(pwgen -s 32 1)"
 else
   echo "the utility 'pwgen' needs to be installed."
   exit 1  
