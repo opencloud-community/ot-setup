@@ -13,7 +13,7 @@ rtc:
 turn: 
   enabled: $LIVEKIT_TURN_ENABLED
 keys:
-  devkey: $LIVEKIT_KEYS_DEVKEY
+  apikey: $LIVEKIT_KEYS_DEVKEY
 logging:
   json: $LIVEKIT_LOGGING_JSON
   level: $LIVEKIT_LOGGING_LEVEL
