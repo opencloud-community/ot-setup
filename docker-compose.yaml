@@ -116,16 +116,30 @@ services:
     volumes:
       - ${RECORDER_CONFIG_FILE:-./config/recorder.toml}:/recorder/config.toml
 
+  # *** livekit ***
   livekit:
     image: livekit/livekit-server:v1.7
     profiles: ["livekit"]
     network_mode: host
     restart: always
-    command: --config /livekit.yaml --dev --node-ip 127.0.0.1
+    entrypoint: []
+    environment:
+      LIVEKIT_HTTP_PORT: "${LIVEKIT_HTTP_PORT:-7880}"
+      LIVEKIT_TCP_PORT: "${LIVEKIT_TCP_PORT:-7881}"
+      LIVEKIT_RTC_USE_EXTERNAL_IP: "${LIVEKIT_RTC_USE_EXTERNAL_IP:-true}"
+      LIVEKIT_RTC_PORT_RANGE_START: "${LIVEKIT_RTC_PORT_RANGE_START:-50000}"
+      LIVEKIT_RTC_PORT_RANGE_END: "${LIVEKIT_RTC_PORT_RANGE_END:-60000"
+      LIVEKIT_RTC_ENABLE_LOOPBACK_CANDIDATE: "${LIVEKIT_RTC_ENABLE_LOOPBACK_CANDIDATE:-false}"
+      LIVEKIT_TURN_ENABLED: "${LIVEKIT_TURN_ENABLED:-false}"
+      LIVEKIT_KEYS_DEVKEY: "${LIVEKIT_KEYS_DEVKEY:-secret}"
+      LIVEKIT_LOGGING_JSON: "${LIVEKIT_LOGGING_JSON:-false}"
+      LIVEKIT_LOGGING_LEVEL: "${LIVEKIT_LOGGING_LEVEL:-info}"
+    command:
+      - /livekit-init.sh 
     volumes:
-      - ./livekit.yaml:/livekit.yaml
+      - ./init/livekit-init.sh:/livekit-init.sh
 
-  # *** janus gateway***
+  # *** janus gateway ***
   janus:
     image: ${JANUS_IMAGE_SRC:-registry.opencode.de/opentalk/janus-gateway}:${JANUS_IMAGE_TAG:-v0.13.4}
     profiles: ["core", "janus"]
