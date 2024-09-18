@@ -1,5 +1,9 @@
 #!/bin/sh
 
+if [ -f /livekit.yaml ]; then
+  echo "[INIT] livekit.yaml config present. Skip writing config."
+else
+  echo "[INIT] Write livekit.yaml."
 cat << EOF > /livekit.yaml
 ---
 port: $LIVEKIT_HTTP_PORT
@@ -35,6 +39,7 @@ logging:
     json: $LIVEKIT_LOGGING_JSON
     level: $LIVEKIT_LOGGING_LEVEL
 EOF
+fi
 
 /livekit-server --config /livekit.yaml
 
