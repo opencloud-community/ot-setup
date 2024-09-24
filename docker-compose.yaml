@@ -2,7 +2,7 @@
 services:
   # *** Web-Frontend
   web-frontend:
-    image: ${OT_FRONTEND_IMAGE_SRC:-registry.opencode.de/opentalk/web-frontend}:${OT_FRONTEND_IMAGE_TAG:-v1.20.0}
+    image: ${OT_FRONTEND_IMAGE_SRC:-registry.opencode.de/opentalk/web-frontend}:${OT_FRONTEND_IMAGE_TAG:-v1.21.0}
     profiles: ["core", "web-frontend"]
     restart: always
     ports:
@@ -29,12 +29,12 @@ services:
       FEATURE_PROTOCOL: ${FEATURE_PROTOCOL:-true}
       FEATURE_RECORDING: ${FEATURE_RECORDING:-false}
       WAITING_ROOM_DEFAULT_VALUE: ${WAITING_ROOM_DEFAULT_VALUE:-false}
-      PRODUCT_VERSION: "v24.11.0"
+      PRODUCT_VERSION: "v24.12.0-rc.1"
 
 
   # *** controller ***
   controller:
-    image: ${OPENTALK_CONTROLLER_IMAGE_SRC:-registry.opencode.de/opentalk/controller}:${OPENTALK_CONTROLLER_IMAGE_TAG:-v0.19.1}
+    image: ${OPENTALK_CONTROLLER_IMAGE_SRC:-registry.opencode.de/opentalk/controller}:${OPENTALK_CONTROLLER_IMAGE_TAG:-v0.20.0}
     profiles: ["core", "controller"]
     restart: always
     ports:
@@ -98,7 +98,7 @@ services:
 
   # *** recorder ***
   recorder:
-    image: ${RECORDER_IMAGE_SRC:-registry.opencode.de/opentalk/recorder}:${RECORDER_IMAGE_TAG:-v0.5.1}
+    image: ${RECORDER_IMAGE_SRC:-registry.opencode.de/opentalk/recorder}:${RECORDER_IMAGE_TAG:-v0.6.0}
     profiles: ["recorder"]
     restart: always
     network_mode: host
