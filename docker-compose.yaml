@@ -29,7 +29,7 @@ services:
       FEATURE_PROTOCOL: ${FEATURE_PROTOCOL:-true}
       FEATURE_RECORDING: ${FEATURE_RECORDING:-false}
       WAITING_ROOM_DEFAULT_VALUE: ${WAITING_ROOM_DEFAULT_VALUE:-false}
-      PRODUCT_VERSION: "v24.10.0"
+      PRODUCT_VERSION: "v24.10.1-rc.1"
 
 
   # *** controller ***
@@ -77,7 +77,7 @@ services:
 
   # *** obelisk ***
   obelisk:
-    image: ${OT_OBELISK_IMAGE_SRC:-registry.opencode.de/opentalk/obelisk}:${OT_OBELISK_IMAGE_TAG:-v0.10.0}
+    image: ${OT_OBELISK_IMAGE_SRC:-registry.opencode.de/opentalk/obelisk}:${OT_OBELISK_IMAGE_TAG:-v0.10.2}
     profiles: ["obelisk"]
     network_mode: host
     restart: always
