@@ -3,7 +3,7 @@ services:
   # *** Web-Frontend
   web-frontend:
     #image: ${OT_FRONTEND_IMAGE_SRC:-registry.opencode.de/opentalk/web-frontend}:${OT_FRONTEND_IMAGE_TAG:-v1.20.0}
-    image: git.opentalk.dev:5050/opentalk/frontend/web/web-app:1356_livekit-rebased
+    image: git.opentalk.dev:5050/opentalk/frontend/web/web-app:v2.0.0-alpha.3-profiling
     profiles: ["core", "web-frontend"]
     restart: always
     ports:
