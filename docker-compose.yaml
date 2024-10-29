@@ -29,7 +29,7 @@ services:
       FEATURE_PROTOCOL: ${FEATURE_PROTOCOL:-true}
       FEATURE_RECORDING: ${FEATURE_RECORDING:-false}
       WAITING_ROOM_DEFAULT_VALUE: ${WAITING_ROOM_DEFAULT_VALUE:-false}
-      PRODUCT_VERSION: "v24.13.0-rc.2"
+      PRODUCT_VERSION: "v24.13.0-rc.3"
 
 
   # *** controller ***
@@ -98,7 +98,7 @@ services:
 
   # *** recorder ***
   recorder:
-    image: ${RECORDER_IMAGE_SRC:-registry.opencode.de/opentalk/recorder}:${RECORDER_IMAGE_TAG:-v0.7.1}
+    image: ${RECORDER_IMAGE_SRC:-registry.opencode.de/opentalk/recorder}:${RECORDER_IMAGE_TAG:-v0.7.2}
     profiles: ["recorder"]
     restart: always
     network_mode: host
