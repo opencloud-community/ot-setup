@@ -675,6 +675,10 @@
         "https://${KC_DOMAIN}/auth/popup_callback",
         "https://${KC_DOMAIN}/",
         "https://${KC_DOMAIN}/auth/callback",
+        "https://${KC_DOMAIN}/dashboard",
+        "https://${KC_DOMAIN}/dashboard/*",
+        "https://${KC_DOMAIN}/room/*",
+        "https://${KC_DOMAIN}/join",
         "https://${KC_DOMAIN}/dashboard"
       ],
       "webOrigins": [
