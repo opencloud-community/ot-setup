@@ -31,7 +31,7 @@ port = 5060
 # ID of this SIP endpoint
 # When not set, it is generated as sip:<username>@<addr> where `addr` may be replaced by the
 # public address discovered using the stun-server
-#id = "sip:alice@example.org"
+#id = "sip:alice@example.com"
 
 # Username/Password pair.
 # Usually provided by the SIP provider
@@ -39,16 +39,16 @@ username = "alice"
 password = "mysecurepassword"
 
 # Realm of the given username/password pair
-realm = "example.org"
+realm = "example.com"
 
 # SIP URI of the registrar 
-registrar = "sip:example.org"
+registrar = "sip:example.com"
 
 # Seconds between ping/pong to keep NAT binding alive
 #nat_ping_delta = 30
 
 # Host-port of the stun server used for SIP
-stun_server = "stun.example.org:3478"
+stun_server = "stun.example.com:3478"
 
 # Enforce quality of protection on SIP authentication
 # (reuse of nonce + nonce-count instead of

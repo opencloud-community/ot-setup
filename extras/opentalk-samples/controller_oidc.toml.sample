@@ -1,0 +1,228 @@
+# SPDX-FileCopyrightText: OpenTalk GmbH <mail@opentalk.eu>
+#
+# SPDX-License-Identifier: EUPL-1.2
+
+[logging]
+# Default tracing directives that will always be applied after RUST_LOG's directives.
+# Each array entry may contain a single directive.
+# Below are some example directives which are used by default to reduce the amount of spamming some crates do by default.
+# The defaults will always apply, but they can be explicitly overwritten with this config or the RUST_LOG environment
+# variable. The priority of the different configuration options is: RUST_LOG > config file > defaults
+#default_directives = [
+#   "ERROR",
+#   "opentalk=INFO",
+#   "pinky_swear=OFF",
+#   "rustls=WARN",
+#   "mio=ERROR",
+#   "lapin=WARN",
+#   "execution_id=trace"
+#]
+
+# Specify an optional OTLP tracing endpoint to export traces to
+#otlp_tracing_endpoint = "http://localhost:4317"
+
+# Service name when using opentelemetry
+#service_name = "controller"
+# Service namespace when using opentelemetry
+#service_namespace = "opentalk"
+# Service instance id when using opentelemetry. A random UUID will be generated at runtime if not set here.
+#service_instance_id = "627cc493-f310-47de-96bd-71410b7dec09"
+
+[database]
+# URL used to connect to a postgres.
+url = "postgres://ot:postgrespw@postgres:5432/opentalk"
+
+# Maximum number of connections allowed to the server.
+# Defaults to 100 which is the default of postgres.
+#max_connections = 100
+
+[http]
+# The port to bind the HTTP Server to (defaults to 11311).
+port = 11311
+# URLs that requests are allowed from. Leave empty to allow all.
+#cors.allowed_origin = ["https://example.com"]
+
+# Settings for the keycloak which is the user provider and allows authentication via OIDC.
+# This is deprecated, replace with [oidc] and [user_search] sections.
+#[keycloak]
+# URL to the keycloak
+#base_url = "http://accounts.example.com/auth"
+# Name of the keycloak realm
+#realm = "opentalk"
+# Client ID
+#client_id = "OtBackend"
+# Client secret (application requires confidential client).
+#client_secret = "keycloakclientsecretforcontroller"
+
+# Configure how Keycloak users resulting from a search and registered Opentalk users are assigned to each other
+# The following assignment strategies are available:
+#   - by Keycloak id (default): Keycloak users are assigned to Opentalk users using Keycloak's id field.
+#   - by user attribute: Keycloak must provide a user attribute holding the user IDs. The name of this user
+#                        attribute must be set here in external_id_user_attribute_name.
+#external_id_user_attribute_name = "my_user_attribute_name"
+
+# OIDC configuration.
+# Currently only Keycloak is supported. Full compliance with other OIDC providers is not guaranteed.
+[oidc]
+# URL to the keycloak
+authority = "https://accounts.example.com/auth/realms/opentalk"
+
+[oidc.frontend]
+# OIDC authority base url for the frontend.
+# Optional, if not set, the value from `oidc.authority` is used.
+# Will be made available to the frontend via the `GET /v1/auth/login` endpoint.
+authority = "https://accounts.example.com/auth/realms/opentalk"
+
+# Client id that will be used by the frontend when connecting to the oidc provider.
+client_id = "OtFrontend"
+
+[oidc.controller]
+# OIDC authority base url for the controller.
+# Optional, if not set, the value from `oidc.authority` is used.
+#authority = "https://accounts.example.com/auth/realms/opentalk"
+
+# Client id that will be used by the controller when connecting to the oidc provider.
+client_id = "OtBackend"
+
+# Client secret that will be used by the controller when connecting to the oidc provider.
+client_secret = "keycloakclientsecretforcontroller"
+
+[user_search]
+# Defines which backend to use for user search. Only `keycloak_webapi` is currently available.
+backend = "keycloak_webapi"
+
+# Base URL of the Keycloak web api.
+api_base_url = "https://accounts.example.com/auth/realms/opentalk"
+
+# Client id that is used to authenticate against the user search API.
+# Optional, if not set, the value from `oidc.controller.client_id` is used.
+client_id = "OtBackend"
+
+# Client secret that is used to authenticate against the user search API.
+# Optional, if not set, the value from `oidc.controller.client_secret` is used.
+client_secret = "keycloakclientsecretforcontroller"
+
+# Configure how Keycloak users resulting from a search and registered Opentalk users are assigned to each other
+# The following assignment strategies are available:
+#   - by Keycloak id (default): Keycloak users are assigned to Opentalk users using Keycloak's id field.
+#   - by user attribute: Keycloak must provide a user attribute holding the user IDs. The name of this user
+#                        attribute must be set here in external_id_user_attribute_name.
+#external_id_user_attribute_name = "my_user_attribute_name"
+
+# Set the behaviour of the `/users/find` endpoint.
+# This allows searching for users who have not yet logged into the controller.
+# You can choose where to search for users or disable the endpoint completely for performance or privacy reasons.
+# Possible values are "disabled", "from_database" and "from_user_search_backend".
+#users_find_behavior = "from_user_search_backend"
+users_find_behavior = "from_user_search_backend"
+
+[livekit]
+public_url = "https://livekit.example.com"
+service_url = "http://host.docker.internal:7880"
+api_key = "controller"
+api_secret = "livekitapisecret"
+
+[rabbit_mq]
+# The URL to use to connect to the rabbit mq broker
+#url = "amqp://username:password@host/%2F"
+
+# The rabbitmq queue name for the mail worker,
+# mailing is disabled when this is not set.
+#mail_task_queue = "opentalk_mailer"
+
+# The rabbitmq queue name for the recorder,
+# recording is disabled when this is not set.
+#recording_task_queue = "opentalk_recorder"
+
+# Minimum amount of connections to retain when removing stale connections
+#min_connections = 10
+
+# Maximum number of amqp channels per connection
+#max_channels_per_connection = 100
+url = "amqp://rabbit/%2F"
+mail_task_queue = "opentalk_mailer"
+recording_task_queue = "opentalk_recorder"
+
+#[turn]
+# Lifetime of the generated credentials (in seconds)
+#lifetime = 86400
+
+#[[turn.servers]]
+# URIS of this Turn Server following rfc7065
+#uris = [
+#    "turn:127.0.0.1:3478?transport=udp",
+#    "turn:127.0.0.1:3478?transport=tcp",
+#    "turns:127.0.0.1:5349?transport=tcp"
+#]
+# The Pre Shared Key set with --static-auth-secret=...
+#pre_shared_key = "MyS3cr37"
+
+#[stun]
+#uris = ["stun:127.0.0.1:3478"]
+
+#[authz]
+# The reload interval of the permissions in seconds.
+# Used to propagate updates from one controller to the other.
+# reload_interval = 10
+
+#[call_in]
+# Set a phone number which will be displayed to the user
+# for the call-in service
+#tel="03012345678"
+# Enable the mapping of user names to their phone number. This requires
+# the OIDC provider to have a phone number field configured for their users.
+#enable_phone_mapping=false
+# The default country code for call in numbers. Notated in Alpha-2 code (ISO 3166)
+# Phone numbers that do not fall in the category of the default country must be notated
+# in the international format.
+#default_country_code="DE"
+
+# MinIO configuration
+[minio]
+# The URI to the MinIO instance
+uri = "http://minio:9000"
+# Name of the bucket
+bucket = "s3_bucket"
+# Access key for the MinIO bucket
+access_key = "minioadmin"
+# Secret key for the MinIO bucket
+secret_key = "minioadmin"
+
+# The etherpad configuration for the protocol module
+#[etherpad]
+#url = "http://etherpad:9001"
+# Etherpads api key
+#api_key = "etherpadapikey"
+
+# Spacedeck configuration
+#[spacedeck]
+#url = "http://spacedeck:9666"
+#api_key = "spacedeckapitoken"
+
+# Default/fallback values
+#[defaults]
+# Default language of a new user
+#user_language = "en-US"
+# Default presenter role for all users (defaults to false if not set)
+#participants_have_presenter_role = true
+
+# Settings for endpoints
+[endpoints]
+# Disable the /users/find endpoint for performance or privacy reasons
+disable_users_find = false
+
+# Enable user-searching using keycloak's admin API
+# This allows for finding users which have not yet
+# logged into the controller
+users_find_use_kc = false
+
+# Allow inviting any unchecked email address.
+# Not recommended without proper outgoing anti-spam protection
+event_invite_external_email_address = true
+
+# Configuration for the /metric HTTP endpoint
+#[metrics]
+# Allowlist for the /metrics endpoint
+#
+# Example: Allow all traffic from localhost
+#allowlist = ["127.0.0.0/24", "::ffff:0:0/96"]

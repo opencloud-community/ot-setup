@@ -12,7 +12,7 @@ mail_task_queue = "opentalk_mailer"
 #smtp_server = "smtp://localhost:1025?disable_starttls=true"
 # Set the From email address according to the requirements of your SMTP server.
 #from_name = "OpenTalk"
-#from_email = "no-reply@example.org"
+#from_email = "no-reply@example.com"
 
 [template_builder]
 # Link builder templates. `base_url` and `x_id` will be replaced. Need when the frontend uses different paths.
@@ -21,8 +21,8 @@ mail_task_queue = "opentalk_mailer"
 #dashboard_event_link_builder = "{base_url}/dashboard/meetings/{event_id}"
 
 [frontend]
-#base_url = "https://opentalk.example.org"
-#data_protection_url = "https://opentalk.example.org/dataprotection"
+#base_url = "https://opentalk.example.com"
+#data_protection_url = "https://opentalk.example.com/dataprotection"
 
 [templates]
 # Path to templates. These are loaded at runtime and are not compiled in.

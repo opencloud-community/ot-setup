@@ -1,11 +1,11 @@
+[controller]
+domain = "controller.example.com"
+insecure = false
+
 [auth]
-issuer = "https://accounts.example.org/auth/realms/MyRealm"
+issuer = "https://accounts.example.com/auth/realms/MyRealm"
 client_id = "Recorder"
 client_secret = "INSERT_KEY"
-
-[controller]
-domain = "controller.example.org"
-insecure = false
 
 [rabbitmq]
 uri = "amqp://guest:guest@localhost/%2F"
