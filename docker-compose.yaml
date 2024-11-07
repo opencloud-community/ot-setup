@@ -2,7 +2,7 @@
 services:
   # *** Web-Frontend
   web-frontend:
-    image: ${OT_FRONTEND_IMAGE_SRC:-registry.opencode.de/opentalk/web-frontend}:${OT_FRONTEND_IMAGE_TAG:-v1.22.1}
+    image: ${OT_FRONTEND_IMAGE_SRC:-registry.opencode.de/opentalk/web-frontend}:${OT_FRONTEND_IMAGE_TAG:-v2.0.0}
     profiles: ["core", "web-frontend"]
     restart: always
     ports:
@@ -12,6 +12,7 @@ services:
       BASE_URL: https://${OT_DOMAIN}
       OIDC_ISSUER: https://${KC_HOSTNAME:-accounts.${OT_DOMAIN}}/auth/realms/${KC_REALM_ID:-opentalk}
       OIDC_CLIENT_ID: ${OIDC_CLIENT_ID:-OtFrontend}
+      LIVEKIT_SERVER_URL: https://livekit.${OT_DOMAIN}/
       NDT_SERVER: ${NDT_SERVER:-ndt.example.com}
       CHANGE_PASSWORD_URL: https://${KC_HOSTNAME:-accounts.${OT_DOMAIN}}/auth/realms/${KC_REALM_ID:-opentalk}/account/
       ERROR_REPORT_ADDRESS: ${ERROR_REPORT_ADDRESS:-reports@example.com}
@@ -29,12 +30,12 @@ services:
       FEATURE_PROTOCOL: ${FEATURE_PROTOCOL:-true}
       FEATURE_RECORDING: ${FEATURE_RECORDING:-false}
       WAITING_ROOM_DEFAULT_VALUE: ${WAITING_ROOM_DEFAULT_VALUE:-false}
-      PRODUCT_VERSION: "v24.13.0"
+      PRODUCT_VERSION: "v24.20.0-rc.1"
 
 
   # *** controller ***
   controller:
-    image: ${OPENTALK_CONTROLLER_IMAGE_SRC:-registry.opencode.de/opentalk/controller}:${OPENTALK_CONTROLLER_IMAGE_TAG:-v0.21.0}
+    image: ${OPENTALK_CONTROLLER_IMAGE_SRC:-registry.opencode.de/opentalk/controller}:${OPENTALK_CONTROLLER_IMAGE_TAG:-v0.25.0}
     profiles: ["core", "controller"]
     restart: always
     ports:
@@ -77,7 +78,7 @@ services:
 
   # *** obelisk ***
   obelisk:
-    image: ${OT_OBELISK_IMAGE_SRC:-registry.opencode.de/opentalk/obelisk}:${OT_OBELISK_IMAGE_TAG:-v0.11.1}
+    image: ${OT_OBELISK_IMAGE_SRC:-registry.opencode.de/opentalk/obelisk}:${OT_OBELISK_IMAGE_TAG:-v0.15.0}
     profiles: ["obelisk"]
     network_mode: host
     restart: always
@@ -90,7 +91,7 @@ services:
 
   # *** mail worker ***
   smtp-mailer:
-    image: ${MAIL_WORKER_IMAGE_SRC:-registry.opencode.de/opentalk/smtp-mailer}:${MAIL_WORKER_IMAGE_TAG:-v0.9.0}
+    image: ${MAIL_WORKER_IMAGE_SRC:-registry.opencode.de/opentalk/smtp-mailer}:${MAIL_WORKER_IMAGE_TAG:-v0.10.0}
     profiles: ["smtp-mailer"]
     restart: always
     volumes:
@@ -98,7 +99,7 @@ services:
 
   # *** recorder ***
   recorder:
-    image: ${RECORDER_IMAGE_SRC:-registry.opencode.de/opentalk/recorder}:${RECORDER_IMAGE_TAG:-v0.7.2}
+    image: ${RECORDER_IMAGE_SRC:-registry.opencode.de/opentalk/recorder}:${RECORDER_IMAGE_TAG:-v0.10.1}
     profiles: ["recorder"]
     restart: always
     network_mode: host
@@ -113,33 +114,35 @@ services:
     volumes:
       - ${RECORDER_CONFIG_FILE:-./config/recorder.toml}:/recorder/config.toml
 
-  # *** janus gateway***
-  janus:
-    image: ${JANUS_IMAGE_SRC:-registry.opencode.de/opentalk/janus-gateway}:${JANUS_IMAGE_TAG:-v0.13.4}
-    profiles: ["core", "janus"]
-    restart: always
+  # *** livekit ***
+  livekit:
+    image: livekit/livekit-server:v1.8
+    profiles: ["core", "livekit"]
     network_mode: host
-    command:
-      - janus
+    restart: always
+    entrypoint: []
     environment:
-      WAITTIMEOUT: ${JANUS_WAITTIMEOUT:-30}
-      RABBITMQ_HOST: ${RABBITMQ_HOST:-127.0.0.1}
-      RABBITMQ_PORT: ${RABBITMQ_EXP_NODE_PORT:-5672}
-      RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-guest}
-      RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-guest}
-      RABBITMQ_VHOST: "${RABBITMQ_VHOST:-/}"
-      JANUS_DISABLE_WEBSOCKET: ${JANUS_DISABLE_WEBSOCKET:-true}
-      JANUS_DISABLE_HTTP: ${JANUS_DISABLE_HTTP:-true}
-      JANUS_EXCHANGE: ${JANUS_EXCHANGE:-janus-exchange}
-      JANUS_QUEUE_NAME: ${JANUS_QUEUE_NAME:-janus-gateway}
-      JANUS_EXCHANGE_TYPE: ${JANUS_EXCHANGE_TYPE:-topic}
-      JANUS_QUEUE_INCOMING: ${JANUS_QUEUE_INCOMING:-to-janus}
-      JANUS_ROUTING_KEY_OUTGOING: ${JANUS_ROUTING_KEY_OUTGOING:-from-janus}
-      JANUS_ICE_IF: ${JANUS_ICE_IF:-eth0}
-      JANUS_UDP_PORT_RANGE: ${JANUS_UDP_PORT_RANGE:-20000-40000}
-      JANUS_ICE_LITE: ${JANUS_ICE_LITE:-true}
-      JANUS_EVENT_LOOPS: ${JANUS_EVENT_LOOPS:-8}
-      JANUS_IGNORE_MDNS: ${JANUS_IGNORE_MDNS:-true}
+      LIVEKIT_HTTP_PORT: "${LIVEKIT_HTTP_PORT:-7880}"
+      LIVEKIT_HTTP_BIND_ADDRESS: "${LIVEKIT_HTTP_BIND_ADDRESS:-}"
+      LIVEKIT_TCP_PORT: "${LIVEKIT_TCP_PORT:-7881}"
+      LIVEKIT_RTC_PORT_RANGE_START: "${LIVEKIT_RTC_PORT_RANGE_START:-50000}"
+      LIVEKIT_RTC_PORT_RANGE_END: "${LIVEKIT_RTC_PORT_RANGE_END:-60000}"
+      LIVEKIT_RTC_USE_EXTERNAL_IP: "${LIVEKIT_RTC_USE_EXTERNAL_IP:-true}"
+      LIVEKIT_RTC_ENABLE_LOOPBACK_CANDIDATE: "${LIVEKIT_RTC_ENABLE_LOOPBACK_CANDIDATE:-false}"
+      LIVEKIT_TURN_ENABLED: "${LIVEKIT_TURN_ENABLED:-false}"
+      LIVEKIT_TURN_DOMAIN: "${LIVEKIT_TURN_DOMAIN:-turn.$OT_DOMAIN}"
+      LIVEKIT_TURN_TLS_PORT: "${LIVEKIT_TURN_TLS_PORT:-5349}"
+      LIVEKIT_TURN_UDP_PORT: "${LIVEKIT_TURN_UDP_PORT:-3478}"
+      LIVEKIT_TURN_EXTERNAL_TLS: "${LIVEKIT_TURN_EXTERNAL_TLS:-true}"
+      LIVEKIT_KEYS_API_KEY: "${LIVEKIT_KEYS_API_KEY:-opentalk}"
+      LIVEKIT_KEYS_API_SECRET: "${LIVEKIT_KEYS_API_SECRET:-secret}"
+      LIVEKIT_LOGGING_JSON: "${LIVEKIT_LOGGING_JSON:-false}"
+      LIVEKIT_LOGGING_LEVEL: "${LIVEKIT_LOGGING_LEVEL:-info}"
+    command:
+      - /livekit-init.sh
+    volumes:
+      - ./init/livekit-init.sh:/livekit-init.sh
+
 
 
   # *** spacedeck ***
@@ -177,7 +180,7 @@ services:
     ports:
       - "${TERDOC_EXP_PORT:-6560}:${TERDOC_PORT:-6560}"
 
-    # *** KEYCLOAK ***
+  # *** KEYCLOAK ***
   keycloak:
     image: quay.io/keycloak/keycloak:${KC_IMAGE_TAG:-20.0}
     profiles: ["core", "keycloak"]
