@@ -38,13 +38,13 @@ url = "postgres://ot:postgrespw@postgres:5432/opentalk"
 # The port to bind the HTTP Server to (defaults to 11311).
 port = 11311
 # URLs that requests are allowed from. Leave empty to allow all.
-cors.allowed_origin = ["https://example.org"]
+cors.allowed_origin = ["https://example.com"]
 
 # Settings for the keycloak which is the user provider
 # and allows authentication via OIDC
 [keycloak]
 # URL to the keycloak
-base_url = "https://accounts.example.org/auth"
+base_url = "https://accounts.example.com/auth"
 # Name of the keycloak realm
 realm = "opentalk"
 # Client ID
@@ -52,34 +52,11 @@ client_id = "OtBackend"
 # Client secret (application requires confidential client).
 client_secret = "keycloakclientsecretforcontroller"
 
-[room_server]
-# Maximum bitrate allowed for media sessions that will be used to transmit webcam video/audio
-max_video_bitrate = "800000"
-
-# Maximum bitrate allowed for media sessions used for screen share
-max_screen_bitrate = "1200000"
-
-# Number of packets with with given `speaker_focus_level`
-# needed to detect a speaking participant. 
-# 
-# Default: 50 packets (1 second of audio)
-#speaker_focus_packets = "50"
-
-# Average value of audio level needed per packet.
-# 
-# min: 127 (muted)  
-# max: 0   (loud)  
-# default: 50  
-#speaker_focus_level = "50"
-
-# Connection settings for the channel used to talk to the room server.
-# Currently these should be equal to the settings in janus.transport.rabbitmq.jcfg
-# of the respective janus instance.
-[[room_server.connections]]
-to_routing_key = "to-janus"
-exchange = "janus-exchange"
-from_routing_key = "from-janus"
-
+[livekit]
+public_url = "https://livekit.example.com"
+service_url = "http://host.docker.internal:7880"
+api_key = "controller"
+api_secret = "livekitapisecret"
 
 [rabbit_mq]
 # The URL to use to connect to the rabbit mq broker
@@ -102,9 +79,7 @@ url = "amqp://rabbit/%2F"
 mail_task_queue = "opentalk_mailer"
 recording_task_queue = "opentalk_recorder"
 
-[redis]
-# Redis URL used to connect the redis server
-url = "redis://redis:6379/"
+
 
 #[turn]
 # Lifetime of the generated credentials (in seconds)
@@ -189,3 +164,4 @@ secret_key = "minioadmin"
 #
 # Example: Allow all traffic from localhost
 #allowlist = ["127.0.0.0/24", "::ffff:0:0/96"]
+

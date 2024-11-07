@@ -44,11 +44,11 @@ In the current state, the configuration that is ready to use out-of-the-box, cov
 | postgresql   | X         |
 | autoheal     | X         |
 | rabbitmq     | X         |
-| redis        | X         |
+| redis        |           |
 | web-frontend | X         |
 | controller   | X         |
 | minio        | X         |
-| janus-gateway| X         |
+| livekit      | X         |
 | obelisk      |           |
 | smtp-mailer  |           |
 | spacedeck    |           |
@@ -69,6 +69,8 @@ If your domain is for example `example.com`, you have to create the following DN
 - example.com (OpenTalk Web-UI)
 - accounts.example.com (Keycloak instance)
 - controller.example.com (OpenTalk controller service)
+- livekit.example.com (LiveKit server)
+- optional: turn.example.com (if you plan to use the TURN support in LiveKit server)
 
 ### Reverse-Proxy and SSL certificates
 
@@ -80,6 +82,7 @@ When you use the default ports, the services listen on the following ports on th
 - frontend:    localhost:8080
 - controller:  localhost:8090
 - keycloak:    localhost:8087
+- livekit:     localhost:7880
 
 We recommend using nginx as reverse-proxy. Please refer the [official nginx documentation](https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/) for further information.
 
@@ -94,7 +97,7 @@ Clone the git repository to a location of your choice. Since we are using direct
 Specify a release tag when you clone the git repository. Pick the current stable version from our [release page](https://docs.opentalk.eu/releases).
 
 ```bash
-git clone --branch v24.10.0 https://gitlab.opencode.de/opentalk/ot-setup.git /opt/opentalk
+git clone --branch v24.20.0 https://gitlab.opencode.de/opentalk/ot-setup.git /opt/opentalk
 ```
 
 Change to the root of this repository, and use it as base directory for the next steps.
@@ -123,7 +126,7 @@ cp extras/opentalk-samples/controller.toml.sample config/controller.toml
 
 Customize the variables in `.env` according to your needs. In most cases, it is sufficient to adjust the values listed under `common variables`. You should always leave the `docker-compose.yaml` file unchanged to have an easier update process in future.
 
-You absolutely *have to* set `OT_DOMAIN` yourself to a domain you or your organization control.
+You absolutely _have to_ set `OT_DOMAIN` yourself to a domain you or your organization control.
 
 You can generate the secrets with the `gen-secrets.sh` helper script and simply copy + paste the secrets into the `.env` file.
 
@@ -147,6 +150,7 @@ KEYCLOAK_CLIENT_SECRET_RECORDER=itoo2pieyohh6Aighiebietee7iefae7
 SPACEDECK_API_TOKEN=ohP2AeBirineimohS6Pha1oaphoapoM2
 SPACEDECK_INVITE_CODE=eij9weipaxohYiexoh1loo5zae8ic2ah
 ETHERPAD_API_KEY=iethae9aulo0ung6Tida6uquahmahphi
+LIVEKIT_KEYS_API_SECRET=QEHNPlkZ4sIWecuB4rZQVtTWMire3ZbI
 ```
 
 #### Add the secretes to the `config/controller.toml`
@@ -157,8 +161,9 @@ Use the following sed snippets or as an alternative you can also edit the `confi
 ```bash
 source .env; sed -i "s/postgrespw/$POSTGRES_PASSWORD/g" config/controller.toml 
 source .env; sed -i "s/keycloakclientsecretforcontroller/$KEYCLOAK_CLIENT_SECRET_CONTROLLER/g" config/controller.toml 
+source .env; sed -i "s/livekitapisecret/$LIVEKIT_KEYS_API_SECRET/g" config/controller.toml 
 source .env; sed -i "s/spacedeckapitoken/$SPACEDECK_API_TOKEN/g" config/controller.toml 
-source .env; sed -i "s/etherpadapikey/$ETHERPAD_API_KEY/g" config/controller.toml 
+source .env; sed -i "s/etherpadapikey/$ETHERPAD_API_KEY/g" config/controller.toml
 ```
 
 #### Final adjustments to the `config/controller.toml`
@@ -171,12 +176,21 @@ vi config/controller.toml
 
 Change the following values to fit your needs:
 
-```txt
+```toml
 [http]
-cors.allowed_origin = ["https://example.org"]
+cors.allowed_origin = ["https://example.com"]
 
 [keycloak]
-base_url = "https://accounts.example.org/auth"
+base_url = "https://accounts.example.com/auth"
+
+[livekit]
+public_url = "https://livekit.example.com"
+```
+
+If your domain is set with the variable OT_DOMAIN in the .env file, you can replace it with the following snippet, or edit it manually.
+
+```bash
+source .env; sed -i "s/example.com/$OT_DOMAIN/g" config/controller.toml 
 ```
 
 #### Optional: Advanced configuration method using environment variables
