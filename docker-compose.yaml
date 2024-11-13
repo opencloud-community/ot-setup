@@ -10,7 +10,7 @@ services:
     environment:
       CONTROLLER_HOST: ${CONTROLLER_DOMAIN:-controller.${OT_DOMAIN}}
       BASE_URL: https://${OT_DOMAIN}
-      OIDC_ISSUER: https://${KC_HOSTNAME:-accounts.${OT_DOMAIN}}/auth/realms/${KC_REALM_ID:-opentalk}
+      OIDC_ISSUER: ${OIDC_ISSUER:-https://${KC_HOSTNAME:-accounts.${OT_DOMAIN}}/auth/realms/${KC_REALM_ID:-opentalk}}
       OIDC_CLIENT_ID: ${OIDC_CLIENT_ID:-OtFrontend}
       LIVEKIT_SERVER_URL: https://livekit.${OT_DOMAIN}/
       NDT_SERVER: ${NDT_SERVER:-ndt.example.com}
