@@ -97,7 +97,7 @@ Clone the git repository to a location of your choice. Since we are using direct
 Specify a release tag when you clone the git repository. Pick the current stable version from our [release page](https://docs.opentalk.eu/releases).
 
 ```bash
-git clone --branch v24.20.0 https://gitlab.opencode.de/opentalk/ot-setup.git /opt/opentalk
+git clone --branch v24.21.0 https://gitlab.opencode.de/opentalk/ot-setup.git /opt/opentalk
 ```
 
 Change to the root of this repository, and use it as base directory for the next steps.
