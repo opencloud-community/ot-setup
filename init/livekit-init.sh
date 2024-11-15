@@ -15,10 +15,10 @@ rtc:
     enable_loopback_candidate: $LIVEKIT_RTC_ENABLE_LOOPBACK_CANDIDATE
 turn: 
     enabled: $LIVEKIT_TURN_ENABLED
-#    domain: "$LIVEKIT_TURN_DOMAIN"
-#    tls_port: $LIVEKIT_TURN_TLS_PORT
-#    udp_port: $LIVEKIT_TURN_UDP_PORT
-#    external_tls: $LIVEKIT_TURN_EXTERNAL_TLS
+    domain: "$LIVEKIT_TURN_DOMAIN"
+    tls_port: $LIVEKIT_TURN_TLS_PORT
+    udp_port: $LIVEKIT_TURN_UDP_PORT
+    external_tls: $LIVEKIT_TURN_EXTERNAL_TLS
 keys:
     $LIVEKIT_KEYS_API_KEY: $LIVEKIT_KEYS_API_SECRET
 logging:
