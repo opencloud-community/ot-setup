@@ -13,12 +13,6 @@ rtc:
     port_range_end: $LIVEKIT_RTC_PORT_RANGE_END
     use_external_ip: $LIVEKIT_RTC_USE_EXTERNAL_IP
     enable_loopback_candidate: $LIVEKIT_RTC_ENABLE_LOOPBACK_CANDIDATE
-turn: 
-    enabled: $LIVEKIT_TURN_ENABLED
-#    domain: "$LIVEKIT_TURN_DOMAIN"
-#    tls_port: $LIVEKIT_TURN_TLS_PORT
-#    udp_port: $LIVEKIT_TURN_UDP_PORT
-#    external_tls: $LIVEKIT_TURN_EXTERNAL_TLS
 keys:
     $LIVEKIT_KEYS_API_KEY: $LIVEKIT_KEYS_API_SECRET
 logging:
