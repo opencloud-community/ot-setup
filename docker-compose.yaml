@@ -222,8 +222,8 @@ services:
     volumes:
       - ${POSTGRES_HOST_DATA_DIR:-./data/pg_data}:/var/lib/postgresql/data
     restart: always
-    # ports:
-    #  - ${POSTGRES_EXP_PORT:-5432}:5432
+    ports:
+     - ${POSTGRES_EXP_PORT:-127.0.0.1:5432}:5432
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-opentalk}
       POSTGRES_USER: ${POSTGRES_USER:-ot}
