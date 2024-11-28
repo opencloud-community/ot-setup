@@ -247,6 +247,7 @@ services:
     ports:
       - ${RABBITMQ_EXP_NODE_PORT:-127.0.0.1:5672}:5672
       - ${RABBITMQ_EXP_UI_PORT:-127.0.0.1:15672}:15672
+      - ${RABBITMQ_EXP_MON_PORT:-127.0.0.1:15692}:15692
     environment:
       RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS: -rabbit consumer_timeout 30000
     healthcheck:
