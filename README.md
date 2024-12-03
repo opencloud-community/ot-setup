@@ -4,7 +4,7 @@
 
 This guide will take you through a quick installation to run a simple OpenTalk installation for a **small** setup on your own server. Be sure, that your network, firewall, domain names and certificates are configured properly before you start the OpenTalk services.
 
-For more information, please also refer our [documentation pages](https://https://docs.opentalk.eu).
+For more information, please also refer our [documentation pages](https://docs.opentalk.eu).
 
 To stay informed about the latest releases, please visit our [Releases page](https://docs.opentalk.eu/releases/). There, you'll find detailed information on new features, bug fixes, and version changes.
 
@@ -97,7 +97,7 @@ Clone the git repository to a location of your choice. Since we are using direct
 Specify a release tag when you clone the git repository. Pick the current stable version from our [release page](https://docs.opentalk.eu/releases).
 
 ```bash
-git clone --branch v24.21.0 https://gitlab.opencode.de/opentalk/ot-setup.git /opt/opentalk
+git clone --branch v24.x.x https://gitlab.opencode.de/opentalk/ot-setup.git /opt/opentalk
 ```
 
 Change to the root of this repository, and use it as base directory for the next steps.
