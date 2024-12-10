@@ -31,6 +31,7 @@ services:
       DATA_PROTECTION_URL: ${DATA_PROTECTION_URL:-}
       SENTRY_DSN: ${SENTRY_DSN:-}
       PRODUCT_VERSION: "v24.21.0-rc.3"
+      LIVEKIT_E2EE_SALT: "${LIVEKIT_E2EE_SALT:-}"
 
   # *** controller ***
   controller:
