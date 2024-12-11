@@ -151,6 +151,7 @@ SPACEDECK_API_TOKEN=ohP2AeBirineimohS6Pha1oaphoapoM2
 SPACEDECK_INVITE_CODE=eij9weipaxohYiexoh1loo5zae8ic2ah
 ETHERPAD_API_KEY=iethae9aulo0ung6Tida6uquahmahphi
 LIVEKIT_KEYS_API_SECRET=QEHNPlkZ4sIWecuB4rZQVtTWMire3ZbI
+LIVEKIT_E2EE_SALT=Mnn8IrFdE0cjWKQBLtB2fvulyYNvSDA1
 ```
 
 #### Add the secretes to the `config/controller.toml`
