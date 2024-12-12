@@ -207,7 +207,7 @@ services:
     user: 0:0
     volumes:
       - ${KC_HOST_DATA_DIR:-./data/kc_data}:/opt/keycloak/data/:Z
-      - ${KC_HOST_POVIDER_DIR:-./data/kc_provider}:/opt/keycloak/providers:Z
+      - ${KC_HOST_PROVIDER_DIR:-./data/kc_provider}:/opt/keycloak/providers:Z
     ports:
       - ${KC_EXP_PORT:-8087}:8080
     healthcheck:

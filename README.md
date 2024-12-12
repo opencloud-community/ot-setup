@@ -57,7 +57,7 @@ In the current state, the configuration that is ready to use out-of-the-box, cov
 
 Of course, you can **extend** the OpenTalk lite setup to run all services available in the `docker-compose.yaml` file. However, this requires further configuration steps that are not part of this quick install guide. We will provide instructions for an extended setup later.
 
-### open Firewall ports
+### Open Firewall ports
 
 Ensure, that the ports `80/tcp`, `443/tcp` and `20000-40000/udp` are opened in your firewall and accessible from public.
 
@@ -151,10 +151,9 @@ SPACEDECK_API_TOKEN=ohP2AeBirineimohS6Pha1oaphoapoM2
 SPACEDECK_INVITE_CODE=eij9weipaxohYiexoh1loo5zae8ic2ah
 ETHERPAD_API_KEY=iethae9aulo0ung6Tida6uquahmahphi
 LIVEKIT_KEYS_API_SECRET=QEHNPlkZ4sIWecuB4rZQVtTWMire3ZbI
-LIVEKIT_E2EE_SALT=Mnn8IrFdE0cjWKQBLtB2fvulyYNvSDA1
 ```
 
-#### Add the secretes to the `config/controller.toml`
+#### Add the secrets to the `config/controller.toml`
 
 Add your or the generated secrets to `config/controller.toml` stored in the `.env` file.
 Use the following sed snippets or as an alternative you can also edit the `config/controller.toml` manually.
