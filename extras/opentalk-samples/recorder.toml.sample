@@ -10,3 +10,15 @@ client_secret = "INSERT_KEY"
 [rabbitmq]
 uri = "amqp://guest:guest@localhost/%2F"
 queue = "opentalk_recorder"
+
+# see `man strftime`
+# European style - alpine with musl has no locale
+clock_format = "%d.%m.%y %X %Z"
+
+# US style
+#clock_format = "%x %X %Z"
+
+# Enables Hardware Acceleration for Intel GPUs
+#[recorder.hardware_acceleration]
+#manufacturer = "intel"
+#device = "/dev/dri/renderD129"

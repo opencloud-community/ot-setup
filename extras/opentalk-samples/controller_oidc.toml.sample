@@ -199,6 +199,10 @@ secret_key = "minioadmin"
 #url = "http://spacedeck:9666"
 #api_key = "spacedeckapitoken"
 
+# Subroom audio whisper configuration
+#[subroom_audio]
+#enable_whisper = false
+
 # Default/fallback values
 #[defaults]
 # Default language of a new user
