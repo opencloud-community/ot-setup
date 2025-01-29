@@ -31,11 +31,11 @@ services:
       IMPRINT_URL: ${IMPRINT_URL:-}
       DATA_PROTECTION_URL: ${DATA_PROTECTION_URL:-}
       SENTRY_DSN: ${SENTRY_DSN:-}
-      PRODUCT_VERSION: "v25.0.0"
+      PRODUCT_VERSION: "v25.0.1-rc.1"
 
   # *** controller ***
   controller:
-    image: ${OPENTALK_CONTROLLER_IMAGE_SRC:-registry.opencode.de/opentalk/controller}:${OPENTALK_CONTROLLER_IMAGE_TAG:-v0.28.1}
+    image: ${OPENTALK_CONTROLLER_IMAGE_SRC:-registry.opencode.de/opentalk/controller}:${OPENTALK_CONTROLLER_IMAGE_TAG:-v0.28.2}
     profiles: ["core", "controller"]
     restart: always
     ports:
@@ -74,6 +74,7 @@ services:
       OPENTALK_CTRL_CALL_IN__TEL: "${OPENTALK_CTRL_CALL_IN__TEL:-}"
       OPENTALK_CTRL_CALL_IN__DEFAULT_COUNTRY_CODE: "${OPENTALK_CTRL_CALL_IN__DEFAULT_COUNTRY_CODE:-DE}"
       OPENTALK_CTRL_CALL_IN__ENABLE_PHONE_MAPPING: "${OPENTALK_CTRL_CALL_IN__ENABLE_PHONE_MAPPING:-false}"
+      OPENTALK_CTRL_SUBROOM_AUDIO__ENABLE_WHISPER: "true"
     volumes:
       - ${OPENTALK_CONTROLLER_CONFIG_FILE:-./config/controller.toml}:/controller/config.toml
 
