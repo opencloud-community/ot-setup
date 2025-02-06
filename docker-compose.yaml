@@ -31,7 +31,7 @@ services:
       IMPRINT_URL: ${IMPRINT_URL:-}
       DATA_PROTECTION_URL: ${DATA_PROTECTION_URL:-}
       SENTRY_DSN: ${SENTRY_DSN:-}
-      PRODUCT_VERSION: "v25.0.1-rc.2"
+      PRODUCT_VERSION: "v25.0.1-rc.3"
 
   # *** controller ***
   controller:
@@ -95,7 +95,7 @@ services:
 
   # *** mail worker ***
   smtp-mailer:
-    image: ${MAIL_WORKER_IMAGE_SRC:-registry.opencode.de/opentalk/smtp-mailer}:${MAIL_WORKER_IMAGE_TAG:-v0.12.0}
+    image: ${MAIL_WORKER_IMAGE_SRC:-registry.opencode.de/opentalk/smtp-mailer}:${MAIL_WORKER_IMAGE_TAG:-v0.11.1}
     profiles: ["smtp-mailer"]
     restart: always
     volumes:
