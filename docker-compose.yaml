@@ -2,14 +2,15 @@
 services:
   # *** Web-Frontend
   web-frontend:
-    image: ${OT_FRONTEND_IMAGE_SRC:-registry.opencode.de/opentalk/web-frontend}:${OT_FRONTEND_IMAGE_TAG:-v2.3.0}
+    image: ${OT_FRONTEND_IMAGE_SRC:-registry.opencode.de/opentalk/web-frontend}:${OT_FRONTEND_IMAGE_TAG:-v2.4.0}
     profiles: ["core", "web-frontend"]
     restart: always
     ports:
-      - ${OT_FRONTEND_EXP_PORT:-8080}:80
+      - ${OT_FRONTEND_EXP_PORT:-8080}:${OT_FRONTEND_PORT:-80}
     environment:
       CONTROLLER_HOST: ${CONTROLLER_DOMAIN:-controller.${OT_DOMAIN}}
       BASE_URL: https://${OT_DOMAIN}
+      PORT: ${OT_FRONTEND_POR:-80}
       OIDC_ISSUER: ${OIDC_ISSUER:-https://${KC_HOSTNAME:-accounts.${OT_DOMAIN}}/auth/realms/${KC_REALM_ID:-opentalk}}
       OIDC_CLIENT_ID: ${OIDC_CLIENT_ID:-OtFrontend}
       LIVEKIT_SERVER_URL: https://livekit.${OT_DOMAIN}/
@@ -31,11 +32,11 @@ services:
       IMPRINT_URL: ${IMPRINT_URL:-}
       DATA_PROTECTION_URL: ${DATA_PROTECTION_URL:-}
       SENTRY_DSN: ${SENTRY_DSN:-}
-      PRODUCT_VERSION: "v25.1.0-beta.2"
+      PRODUCT_VERSION: "v25.1.0-rc"
 
   # *** controller ***
   controller:
-    image: ${OPENTALK_CONTROLLER_IMAGE_SRC:-registry.opencode.de/opentalk/controller}:${OPENTALK_CONTROLLER_IMAGE_TAG:-v0.29.0}
+    image: ${OPENTALK_CONTROLLER_IMAGE_SRC:-registry.opencode.de/opentalk/controller}:${OPENTALK_CONTROLLER_IMAGE_TAG:-v0.29.1}
     profiles: ["core", "controller"]
     restart: always
     ports:
@@ -80,7 +81,7 @@ services:
 
   # *** obelisk ***
   obelisk:
-    image: ${OT_OBELISK_IMAGE_SRC:-registry.opencode.de/opentalk/obelisk}:${OT_OBELISK_IMAGE_TAG:-v0.19.0}
+    image: ${OT_OBELISK_IMAGE_SRC:-registry.opencode.de/opentalk/obelisk}:${OT_OBELISK_IMAGE_TAG:-v0.19.1}
     profiles: ["obelisk"]
     network_mode: host
     extra_hosts:
@@ -103,7 +104,7 @@ services:
 
   # *** recorder ***
   recorder:
-    image: ${RECORDER_IMAGE_SRC:-registry.opencode.de/opentalk/recorder}:${RECORDER_IMAGE_TAG:-v0.14.0}
+    image: ${RECORDER_IMAGE_SRC:-registry.opencode.de/opentalk/recorder}:${RECORDER_IMAGE_TAG:-v0.14.1}
     profiles: ["recorder"]
     extra_hosts:
       - host.docker.internal:host-gateway
