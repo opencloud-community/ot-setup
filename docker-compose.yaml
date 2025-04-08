@@ -2,7 +2,7 @@
 services:
   # *** Web-Frontend
   web-frontend:
-    image: ${OT_FRONTEND_IMAGE_SRC:-registry.opencode.de/opentalk/web-frontend}:${OT_FRONTEND_IMAGE_TAG:-v2.4.0}
+    image: ${OT_FRONTEND_IMAGE_SRC:-registry.opencode.de/opentalk/web-frontend}:${OT_FRONTEND_IMAGE_TAG:-v2.4.1}
     profiles: ["core", "web-frontend"]
     restart: always
     ports:
@@ -32,11 +32,11 @@ services:
       IMPRINT_URL: ${IMPRINT_URL:-}
       DATA_PROTECTION_URL: ${DATA_PROTECTION_URL:-}
       SENTRY_DSN: ${SENTRY_DSN:-}
-      PRODUCT_VERSION: "v25.1.0-rc"
+      PRODUCT_VERSION: "v25.1.0-rc.2"
 
   # *** controller ***
   controller:
-    image: ${OPENTALK_CONTROLLER_IMAGE_SRC:-registry.opencode.de/opentalk/controller}:${OPENTALK_CONTROLLER_IMAGE_TAG:-v0.29.1}
+    image: ${OPENTALK_CONTROLLER_IMAGE_SRC:-registry.opencode.de/opentalk/controller}:${OPENTALK_CONTROLLER_IMAGE_TAG:-v0.29.2}
     profiles: ["core", "controller"]
     restart: always
     ports:
