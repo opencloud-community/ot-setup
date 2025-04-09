@@ -32,11 +32,11 @@ services:
       IMPRINT_URL: ${IMPRINT_URL:-}
       DATA_PROTECTION_URL: ${DATA_PROTECTION_URL:-}
       SENTRY_DSN: ${SENTRY_DSN:-}
-      PRODUCT_VERSION: "v25.1.0-rc.2"
+      PRODUCT_VERSION: "v25.1.0-rc.3"
 
   # *** controller ***
   controller:
-    image: ${OPENTALK_CONTROLLER_IMAGE_SRC:-registry.opencode.de/opentalk/controller}:${OPENTALK_CONTROLLER_IMAGE_TAG:-v0.29.2}
+    image: ${OPENTALK_CONTROLLER_IMAGE_SRC:-registry.opencode.de/opentalk/controller}:${OPENTALK_CONTROLLER_IMAGE_TAG:-v0.29.3}
     profiles: ["core", "controller"]
     restart: always
     ports:
