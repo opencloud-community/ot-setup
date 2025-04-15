@@ -81,7 +81,7 @@ services:
 
   # *** obelisk ***
   obelisk:
-    image: ${OT_OBELISK_IMAGE_SRC:-registry.opencode.de/opentalk/obelisk}:${OT_OBELISK_IMAGE_TAG:-v0.19.1}
+    image: ${OT_OBELISK_IMAGE_SRC:-registry.opencode.de/opentalk/obelisk}:${OT_OBELISK_IMAGE_TAG:-v0.19.2}
     profiles: ["obelisk"]
     network_mode: host
     extra_hosts:
@@ -244,7 +244,7 @@ services:
 
   # *** RabbitMQ ***
   rabbit:
-    image: rabbitmq:${RABBITMQ_IMAGE_TAG:-3.12-management-alpine}
+    image: rabbitmq:${RABBITMQ_IMAGE_TAG:-3.13-management-alpine}
     profiles: ["core", "rabbit"]
     restart: always
     ports:
