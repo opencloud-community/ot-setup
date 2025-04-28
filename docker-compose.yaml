@@ -81,7 +81,7 @@ services:
 
   # *** obelisk ***
   obelisk:
-    image: ${OT_OBELISK_IMAGE_SRC:-registry.opencode.de/opentalk/obelisk}:${OT_OBELISK_IMAGE_TAG:-v0.19.2}
+    image: ${OT_OBELISK_IMAGE_SRC:-registry.opencode.de/opentalk/obelisk}:${OT_OBELISK_IMAGE_TAG:-v0.19.3}
     profiles: ["obelisk"]
     network_mode: host
     extra_hosts:
