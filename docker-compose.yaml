@@ -172,14 +172,6 @@ services:
     ports:
       - "${EP_EXP_PORT:-9001}:${EP_PORT:-9001}"
 
-  # *** terdoc ***
-  terdoc:
-    image: ${TERDOC_IMAGE_SRC:-registry.opencode.de/opentalk/terdoc}:${TERDOC_IMAGE_TAG:-v0.2.0}
-    profiles: ["core", "terdoc"]
-    restart: always
-    ports:
-      - "${TERDOC_EXP_PORT:-6560}:${TERDOC_PORT:-6560}"
-
   # *** KEYCLOAK ***
   keycloak:
     image: quay.io/keycloak/keycloak:${KC_IMAGE_TAG:-20.0}
